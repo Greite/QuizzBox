@@ -1,0 +1,63 @@
+# docker-compose file pour le déploiement initial de l'application QuizzBox
+#
+# ajouter les vhosts des services web dans le fichier /etc/vhosts
+# de la machine hôte :
+# exemple pour le service api.public :
+# 127.0.0.1   api.quizzbox.local
+# pour accéder à ce service :  http://api.quizzbox.local:10101
+# accès au service adminer : http://localhost:8080
+# accès au service mysql depuis le container api.public : utiliser le hostname "db"
+
+version: "3"
+networks:
+  quizzbox_network:
+    driver: bridge
+
+services:
+#############################
+# API
+#############################
+  api.public:
+    image: canals/php
+    container_name: api.public.quizzbox.local
+    environment:
+      - VHOST_HOSTNAME=api.quizzbox.local
+      - VHOST_DOCROOT=/var/www/api
+#     - http_proxy=http://www-cache.iutnc.univ-lorraine.fr:3128/
+#     - https_proxy=http://www-cache.iutnc.univ-lorraine.fr:3128/
+    ports:
+      - "10080:80"
+    volumes :
+      - ./api:/var/www/api
+      - ./src:/var/www/src
+    networks:
+      - quizzbox_network
+    links :
+      - mysql:db
+
+#############################
+# mysql + adminer
+#############################
+  mysql:
+    image: mariadb:latest
+    container_name: maria.quizzbox.local
+    environment:
+      - MYSQL_ROOT_PASSWORD=quizzroot
+      - MYSQL_USER=quizz
+      - MYSQL_PASSWORD=quizz
+      - MYSQL_DATABASE=quizzbox
+      - "3603:3306"
+    networks:
+      - quizzbox_network
+    volumes :
+      - ./sql:/var/sql
+
+  adminer:
+     image: adminer
+     container_name: admin.quizzbox.local
+     ports:
+       - "8080:8080"
+     networks:
+      - quizzbox_network
+     links:
+       - mysql:db
