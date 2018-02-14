@@ -1,8 +1,13 @@
 <template>
 	<nav>
 		<div class="nav-wrapper">
-			<a href="#" class="brand-logo">Site communautaire - QuizzBox</a>
-			<ul id="nav-mobile" class="right hide-on-med-and-down">
+			<a href="#!" class="brand-logo">Site communautaire - QuizzBox</a>
+			<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+			<ul class="right hide-on-med-and-down">
+				<li><a href="#/inscription">Inscription</a></li>
+				<li><a href="#/connexion">Connexion</a></li>
+			</ul>
+			<ul class="side-nav" id="mobile-demo">
 				<li><a href="#/inscription">Inscription</a></li>
 				<li><a href="#/connexion">Connexion</a></li>
 			</ul>
@@ -10,7 +15,7 @@
 	</nav>
 </template>
 
-<script>
+<script>   
 
 export default {
 	name: 'Navbar',
@@ -22,6 +27,11 @@ export default {
 
 	}
 }
+
+$( document ).ready(function(){
+	$(".button-collapse").sideNav();
+})
+
 </script>
 
 <style scoped>
