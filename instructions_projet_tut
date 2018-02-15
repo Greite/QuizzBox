@@ -1,0 +1,21 @@
+Moteur de jeu 
+30 question à la base
+10 questions tirée au sort aléatoirement
+Player 1 créer la partie et la lance
+Affichage questions sur chaque client
+Délai de 20s max pour rep
+calcul des point en foction du temps de reponse
+Maitre du jeu qui passe les question suivant
+Fin de partie au bout des 10 questions
+Récap des questions
+
+
+Syncronisation Pull application client qui get toutes les 2s
+pull toutes les 2s après réponse
+
+Websocket nodejs 
+socket.io
+
+Websocket php Ratchet
+
+Sur la raspberry : https://www.slimframework.com/docs/v3/start/web-servers.html#php-built-in-server
