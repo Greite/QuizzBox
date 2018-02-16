@@ -10,6 +10,7 @@
 			<ul class="side-nav" id="mobile-demo">
 				<li><a href="#/inscription">Inscription</a></li>
 				<li><a href="#/connexion">Connexion</a></li>
+				<li @click="logOut">Déconnexion</li>
 			</ul>
 		</div>
 	</nav>
@@ -24,7 +25,9 @@ export default {
 		}
 	},
 	methods: {
-
+		logOut(){
+			window.bus.$emit("logout");
+		}
 	}
 }
 

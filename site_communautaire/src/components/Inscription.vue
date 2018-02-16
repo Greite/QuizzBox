@@ -3,8 +3,8 @@
 		<form class="col s6 offset-s3" @submit="inscription">
 			<div class="row">
 				<div class="input-field col s12">
-					<input id="pseudo" v-model="pseudo" type="text" class="validate">
-					<label for="pseudo">Pseudo</label>
+					<input id="login" v-model="login" type="text" class="validate">
+					<label for="login">Login</label>
 				</div>
 			</div>
 			<div class="row">
@@ -19,12 +19,12 @@
 			</div>
 			<div class="row">
 				<div class="input-field col s6">
-					<input id="email" v-model="email" type="email" class="validate">
-					<label for="email">Email</label>
+					<input id="mail" v-model="mail" type="email" class="validate">
+					<label for="mail">Mail</label>
 				</div>
 				<div class="input-field col s6">
-					<input id="email_verif" v-model="email_verif" type="email" class="validate">
-					<label for="email_verif">Vérification Email</label>
+					<input id="mail_verif" v-model="mail_verif" type="email" class="validate">
+					<label for="mail_verif">Vérification mail</label>
 				</div>
 			</div>
 			<div class="row">
@@ -42,17 +42,32 @@ export default {
 	name: 'Inscription',
 	data () {
 		return {
-			pseudo: '',
+			login: '',
 			password: '',
 			password_verif: '',
-			email: '',
-			email_verif: ''
+			mail: '',
+			mail_verif: ''
 		}
 	},
 	methods: {
-		inscription(){
-			console.log("Inscription")
-		}
+		inscription() {
+	      if (this.password_verif!==this.password) {
+	        alert('Les mots de passe ne correspondent pas')
+	      }
+	      else if (this.mail_verif!==this.mail) {
+	        alert('Les mails ne correspondent pas')
+	      }
+	      else {
+	        window.axios.post('users', {
+	          login: this.login,
+	          password: this.password,
+	        }).then(response => {
+	          this.$router.push({path: '/connexion'})
+	        }).catch((error) => {
+	          alert(error.response.data.error.join("\n"))
+	        })
+	      }
+    	}
 	}
 }
 </script>

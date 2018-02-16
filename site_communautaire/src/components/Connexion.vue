@@ -3,8 +3,8 @@
 		<form class="col s6 offset-s3" @submit="seConnecter">
 			<div class="row">
 				<div class="input-field col s12">
-					<input id="pseudo" v-model="pseudo" type="text" class="validate">
-					<label for="pseudo">Pseudo</label>
+					<input id="login" v-model="login" type="text" class="validate">
+					<label for="login">Login</label>
 				</div>
 			</div>
 			<div class="row">
@@ -28,13 +28,22 @@ export default {
 	name: 'Connexion',
 	data () {
 		return {
-			pseudo: '',
+			login: '',
 			password: '',
 		}
 	},
 	methods: {
 		seConnecter(){
-			console.log("Inscription")
+			window.axios.post('users/signin', {
+				login: this.login,
+				password: this.password,
+			}).then((response) => {
+				this.$store.commit('setMember', response.data);
+				this.$store.commit('setToken', response.data.token);
+				this.$router.push({path: '/accueil'});
+			}).catch((error) => {
+				console.log(error)
+			})
 		}
 	}
 }

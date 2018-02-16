@@ -22,7 +22,7 @@ $configuration = array_merge($settings, $errors, $dependencies);
 $c = new \Slim\Container($configuration);
 $app = new \Slim\App($c);
 
-/*$app->add(function($request, $response, callable $next){
+$app->add(function($request, $response, callable $next){
     $response = $next($request, $response);
     $response = $response->withHeader('Content-type', 'application/json; charset=utf-8');
     $response = $response->withHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,Authorization");
@@ -34,6 +34,12 @@ $app = new \Slim\App($c);
 
 $app->options('/{routes:.+}', function ($request, $response, $args){
     return $response;
-});*/
+});
+
+$app->post('/users[/]','\quizz\control\QuizzController:addUser');
+
+$app->post('/users/signin[/]','\quizz\control\QuizzController:login');
+
+$app->get('/users/{id}[/]','\quizz\control\QuizzController:user');
 
 $app->run();
