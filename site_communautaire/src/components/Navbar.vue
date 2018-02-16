@@ -6,11 +6,12 @@
 			<ul class="right hide-on-med-and-down">
 				<li><a href="#/inscription">Inscription</a></li>
 				<li><a href="#/connexion">Connexion</a></li>
+				<li><a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">highlight_off</i></a></li>
 			</ul>
 			<ul class="side-nav" id="mobile-demo">
 				<li><a href="#/inscription">Inscription</a></li>
 				<li><a href="#/connexion">Connexion</a></li>
-				<li @click="logOut">Déconnexion</li>
+				<li><a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">highlight_off</i></a></li>
 			</ul>
 		</div>
 	</nav>
