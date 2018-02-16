@@ -6,11 +6,12 @@
 			<ul class="right hide-on-med-and-down">
 				<li><a href="#/inscription">Inscription</a></li>
 				<li><a href="#/connexion">Connexion</a></li>
+				<li><a class="btn-floating btn waves-effect waves-light red tooltipped" data-position="bottom" data-delay="50" data-tooltip="Deconnexion"><i class="material-icons">close</i></a></li>
 			</ul>
 			<ul class="side-nav" id="mobile-demo">
 				<li><a href="#/inscription">Inscription</a></li>
 				<li><a href="#/connexion">Connexion</a></li>
-				<li @click="logOut">Déconnexion</li>
+				<li><a href="#/" class="red">Deconnexion</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -33,6 +34,7 @@ export default {
 
 $( document ).ready(function(){
 	$(".button-collapse").sideNav();
+	$('.tooltipped').tooltip({delay: 50});
 })
 
 </script>
