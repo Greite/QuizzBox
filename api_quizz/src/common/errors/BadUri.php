@@ -2,7 +2,7 @@
 /**
 * 
 */
-namespace geo\common\errors;
+namespace quizz\common\errors;
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
