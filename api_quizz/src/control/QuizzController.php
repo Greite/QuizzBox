@@ -110,7 +110,7 @@ class QuizzController {
 
     public function theme(Request $req, Response $resp, $args){
         try {
-            $theme = Theme::select()->first();
+            $theme = Theme::all();
         } catch (ModelNotFoundException $e) {
             $resp = $resp->withStatus(404);
             $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Ressource non disponible : /series/'.$args['id']));
@@ -125,6 +125,26 @@ class QuizzController {
         $resp = $resp->withJson($tabserie);
         return $resp;
     }
+
+    public function quizz(Request $req, Response $resp, $args){
+        try {
+            $quizz = Quizz::where('id','=',$args['id'])->with('questions')->get();
+        } catch (ModelNotFoundException $e) {
+            $resp = $resp->withStatus(404);
+            $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Ressource non disponible : /series/'.$args['id']));
+            return $resp;
+        }
+        $tabserie=[
+            "type"=>"ressource",
+            "meta"=>[$date=date('d/m/y')],
+            "quizz"=>$quizz,
+        ];
+        $resp = $resp->withStatus(200);
+        $resp = $resp->withJson($tabserie);
+        return $resp;
+    }
+
+
 
         /*public function addPhoto(Request $req, Response $resp, $args){
             try {
