@@ -5,10 +5,10 @@ namespace quizz\control;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
-use \geo\model\Photo;
-use \geo\model\Partie;
-use \geo\model\User;
-use \geo\model\Serie;
+use \quizz\model\Photo;
+use \quizz\model\Partie;
+use \quizz\model\User;
+use \quizz\model\Serie;
 use Ramsey\Uuid\Uuid;
 use Firebase\JWT\JWT;
 use Firebase\JWT\ExpiredException;
@@ -29,7 +29,7 @@ class QuizzController {
         $user->save();
         $resp = $resp->withStatus(201);
         $resp = $resp->withHeader('Location', "/user/".$user->id);
-        $resp = $resp->withHeader('Access-Control-Allow-Origin', '*');
+        $resp = $resp->withHeader('Access-Control-Allow-Origin', $request->getHeader('Origin')[0]);
         $resp = $resp->withJson(array('user' => array('id' => $user->id, 'login' => $user->login, 'mail' => $user->mail)));
         return $resp;
 
