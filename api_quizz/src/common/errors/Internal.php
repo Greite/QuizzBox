@@ -2,7 +2,7 @@
 /**
 * 
 */
-namespace geo\common\errors;
+namespace quizz\common\errors;
 
 class Internal
 {

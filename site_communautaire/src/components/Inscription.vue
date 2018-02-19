@@ -61,6 +61,7 @@ export default {
 	        window.axios.post('users', {
 	          login: this.login,
 	          password: this.password,
+	          mail: this.mail
 	        }).then(response => {
 	          this.$router.push({path: '/connexion'})
 	        }).catch((error) => {

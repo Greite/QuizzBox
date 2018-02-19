@@ -2,7 +2,7 @@
 /**
  *
  */
-namespace geo\model;
+namespace quizz\model;
 
 class User extends \Illuminate\Database\Eloquent\Model
 {

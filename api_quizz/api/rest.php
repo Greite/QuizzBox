@@ -26,7 +26,7 @@ $app->add(function($request, $response, callable $next){
     $response = $next($request, $response);
     $response = $response->withHeader('Content-type', 'application/json; charset=utf-8');
     $response = $response->withHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,Authorization");
-    $response = $response->withHeader('Access-Control-Allow-Origin', $request->getHeader('Origin')[0]);
+    $response = $response->withHeader('Access-Control-Allow-Origin', $request->getHeader('Origin'));
     $response = $response->withHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
     $response = $response->withHeader('Access-Control-Allow-Credentials', 'true');
     return $response;
@@ -41,5 +41,7 @@ $app->post('/users[/]','\quizz\control\QuizzController:addUser');
 $app->post('/users/signin[/]','\quizz\control\QuizzController:login');
 
 $app->get('/users/{id}[/]','\quizz\control\QuizzController:user');
+
+$app->get('/themes[/]','\quizz\control\QuizzController:theme');
 
 $app->run();
