@@ -1,10 +1,10 @@
 <template>
 	<nav>
-		<div class="nav-wrapper">
+		<div class="nav-wrapper grey darken-3">
 			<a href="#!" class="brand-logo">Site communautaire - QuizzBox</a>
 			<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 			<ul class="right hide-on-med-and-down">
-				<li><a href="#/inscription">Inscription</a></li>
+				<li><a href="#/inscription" class="grey-text lighten-4">Inscription</a></li>
 				<li><a href="#/connexion">Connexion</a></li>
 				<li><a class="btn-floating btn waves-effect waves-light red tooltipped" data-position="bottom" data-delay="50" data-tooltip="Deconnexion"><i class="material-icons">close</i></a></li>
 			</ul>
