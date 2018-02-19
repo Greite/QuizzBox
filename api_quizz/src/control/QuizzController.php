@@ -5,11 +5,13 @@ namespace quizz\control;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+
 use quizz\model\Theme;
 use quizz\model\Question;
 use quizz\model\Quizz;
 use quizz\model\Reponse;
 use quizz\model\User;
+
 use Ramsey\Uuid\Uuid;
 use Firebase\JWT\JWT;
 use Firebase\JWT\ExpiredException;
@@ -30,7 +32,7 @@ class QuizzController {
         $user->save();
         $resp = $resp->withStatus(201);
         $resp = $resp->withHeader('Location', "/user/".$user->id);
-        $resp = $resp->withHeader('Access-Control-Allow-Origin', '*');
+        $resp = $resp->withHeader('Access-Control-Allow-Origin', $request->getHeader('Origin')[0]);
         $resp = $resp->withJson(array('user' => array('id' => $user->id, 'login' => $user->login, 'mail' => $user->mail)));
         return $resp;
 
@@ -90,7 +92,7 @@ class QuizzController {
             if (password_verify($parsedBody['password'], $user->password)) {
                 $secret = "quizzbox";
 
-                $token = JWT::encode(['iss' => 'http://api.quizzbox.local:10080/user/signin',
+                $token = JWT::encode(['iss' => 'http://api.quizzbox.local:10080/users/signin',
                     'aud' => 'http://api.quizzbox.local:10080/',
                     'iat' => time(),
                     'exp' => time() + 43200,
