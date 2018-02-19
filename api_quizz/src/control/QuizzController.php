@@ -5,10 +5,11 @@ namespace quizz\control;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
-use \geo\model\Photo;
-use \geo\model\Partie;
-use \geo\model\User;
-use \geo\model\Serie;
+use quizz\model\Theme;
+use quizz\model\Question;
+use quizz\model\Quizz;
+use quizz\model\Reponse;
+use quizz\model\User;
 use Ramsey\Uuid\Uuid;
 use Firebase\JWT\JWT;
 use Firebase\JWT\ExpiredException;
@@ -78,28 +79,28 @@ class QuizzController {
 
     public function login(Request $req, Response $resp, $args){
         $parsedBody = $req->getParsedBody();
-        if (!is_null($parsedBody['login']) && !is_null($parsedBody['password'])){
-            try{
-                $user = User::where('login' , '=', $parsedBody['login'])->firstOrFail();
+        if (!is_null($parsedBody['login']) && !is_null($parsedBody['password'])) {
+            try {
+                $user = User::where('login', '=', $parsedBody['login'])->firstOrFail();
             } catch (ModelNotFoundException $e) {
                 $resp = $resp->withStatus(404);
                 $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Utilisateur ou mot de passe incorrect'));
                 return $resp;
             }
-            if (password_verify($parsedBody['password'], $user->password)){
+            if (password_verify($parsedBody['password'], $user->password)) {
                 $secret = "quizzbox";
 
-                $token =JWT::encode( ['iss'=>'http://api.quizzbox.local:10080/user/signin',
-                    'aud'=>'http://api.quizzbox.local:10080/',
-                    'iat'=>time(),
-                    'exp'=>time()+43200,
-                    'id'=>(string) $user->id,
-                    'mail'=>(string) $user->mail],
-                    $secret,'HS512');
+                $token = JWT::encode(['iss' => 'http://api.quizzbox.local:10080/user/signin',
+                    'aud' => 'http://api.quizzbox.local:10080/',
+                    'iat' => time(),
+                    'exp' => time() + 43200,
+                    'id' => (string)$user->id,
+                    'mail' => (string)$user->mail],
+                    $secret, 'HS512');
                 $resp = $resp->withStatus(200);
                 $resp = $resp->withJson(array('login' => $user->login, 'mail' => $user->mail, 'id' => $user->id, 'token' => $token));
                 return $resp;
-            }else{
+            } else {
                 $resp = $resp->withStatus(404);
                 $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Utilisateur ou mot de passe incorrect'));
                 return $resp;
@@ -107,49 +108,67 @@ class QuizzController {
         }
     }
 
-    /*public function addPhoto(Request $req, Response $resp, $args){
+    public function theme(Request $req, Response $resp, $args){
         try {
-            $secret = "geoquizz";
-            $h = $req->getHeader('Authorization')[0];
-            $tokenstring = sscanf($h, "Bearer %s")[0];
-            $token = JWT::decode($tokenstring, $secret, ['HS512']);
-
-            try{
-                User::findOrFail($token->id);
-            }catch(ModelNotFoundException $e){
-
-                $resp = $resp->withStatus(401);
-                $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Le token ne correspond pas"));
-                return $resp;
-            }
-            $parsedBody = $req->getParsedBody();
-            $photo = new Photo;
-            $photo->url = filter_var($parsedBody['url'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $photo->longitude = filter_var($parsedBody['longitude'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $photo->latitude = filter_var($parsedBody['latitude'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $photo->id_ville = filter_var($parsedBody['id_ville'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $photo->save();
-            $resp = $resp->withStatus(201);
-            $resp = $resp->withJson(array('photo' => array('url' => $photo->url, 'longitude' => $photo->longitude, 'latitude' => $photo->latitude, 'id_ville' => $photo->id_ville)));
-            return $resp;
-        }catch(ExpiredException $e) {
-            $resp = $resp->withStatus(401);
-            $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "L'authentification a expirée"));
-            return $resp;
-        }catch(SignatureInvalidException $e) {
-            $resp = $resp->withStatus(401);
-            $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Mauvaise signature"));
-            return $resp;
-        }catch(BeforeValidException $e) {
-            $resp = $resp->withStatus(401);
-            $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
-            return $resp;
-        }catch(UnexpectedValueException $e) {
-            $resp = $resp->withStatus(401);
-            $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
+            $theme = Theme::select()->first();
+        } catch (ModelNotFoundException $e) {
+            $resp = $resp->withStatus(404);
+            $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Ressource non disponible : /series/'.$args['id']));
             return $resp;
         }
-    }*/
+        $tabserie=[
+            "type"=>"ressource",
+            "meta"=>[$date=date('d/m/y')],
+            "serie"=>$theme,
+        ];
+        $resp = $resp->withStatus(200);
+        $resp = $resp->withJson($tabserie);
+        return $resp;
+    }
+
+        /*public function addPhoto(Request $req, Response $resp, $args){
+            try {
+                $secret = "geoquizz";
+                $h = $req->getHeader('Authorization')[0];
+                $tokenstring = sscanf($h, "Bearer %s")[0];
+                $token = JWT::decode($tokenstring, $secret, ['HS512']);
+
+                try{
+                    User::findOrFail($token->id);
+                }catch(ModelNotFoundException $e){
+
+                    $resp = $resp->withStatus(401);
+                    $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Le token ne correspond pas"));
+                    return $resp;
+                }
+                $parsedBody = $req->getParsedBody();
+                $photo = new Photo;
+                $photo->url = filter_var($parsedBody['url'], FILTER_SANITIZE_SPECIAL_CHARS);
+                $photo->longitude = filter_var($parsedBody['longitude'], FILTER_SANITIZE_SPECIAL_CHARS);
+                $photo->latitude = filter_var($parsedBody['latitude'], FILTER_SANITIZE_SPECIAL_CHARS);
+                $photo->id_ville = filter_var($parsedBody['id_ville'], FILTER_SANITIZE_SPECIAL_CHARS);
+                $photo->save();
+                $resp = $resp->withStatus(201);
+                $resp = $resp->withJson(array('photo' => array('url' => $photo->url, 'longitude' => $photo->longitude, 'latitude' => $photo->latitude, 'id_ville' => $photo->id_ville)));
+                return $resp;
+            }catch(ExpiredException $e) {
+                $resp = $resp->withStatus(401);
+                $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "L'authentification a expirée"));
+                return $resp;
+            }catch(SignatureInvalidException $e) {
+                $resp = $resp->withStatus(401);
+                $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Mauvaise signature"));
+                return $resp;
+            }catch(BeforeValidException $e) {
+                $resp = $resp->withStatus(401);
+                $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
+                return $resp;
+            }catch(UnexpectedValueException $e) {
+                $resp = $resp->withStatus(401);
+                $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
+                return $resp;
+            }
+        }*/
 
     /*public function addSerie(Request $req, Response $resp, $args){
         try {
