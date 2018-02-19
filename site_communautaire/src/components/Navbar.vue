@@ -47,8 +47,8 @@ export default {
 }
 
 $( document ).ready(function(){
-    $(".button-collapse").sideNav();
-    $('.tooltipped').tooltip({delay: 50});
+	$(".button-collapse").sideNav();
+	$('.tooltipped').tooltip({delay: 50});
 })
 
 </script>
