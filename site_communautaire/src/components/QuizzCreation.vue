@@ -13,8 +13,12 @@
 					<option v-for="theme in themes" v-bind:value="theme.id">{{theme.nom}}</option>
 				</select>
 			</div>
+			<div class="row" v-for="n in nbQuestion">
+				<h1>Question n°{{n}}</h1>
+				<quizzQuestion></quizzQuestion>
+			</div>
 			<div class="row">
-				<quizzQuestion v-for="question of questions" :key="question._id" :question="question"></quizzQuestion>
+				<a class="btn-floating btn-large waves-effect waves-light red" @click="ajoutQuestion"><i class="material-icons">add</i></a>
 			</div>
 			<div class="row">
 				<button class="btn-large waves-effect waves-light col s4 offset-s4" type="submit" name="action">Créer le quizz
@@ -38,7 +42,8 @@ export default {
 			themes : [],
 			theme : '',
 			questions : [],
-			question : ''
+			question : '',
+			nbQuestion: 1
 		}
 	},
 	mounted () {
@@ -54,9 +59,17 @@ export default {
 			}).then(response => {
 				this.$router.push({path: '/accueil'});  
 			})
+		},
+		ajoutQuestion(){
+			this.nbQuestion++
 		}
 	}
 }
+
+
+$(document).ready(function(){
+	$('ul.tabs').tabs();
+});
 </script>
 
 <style scoped>

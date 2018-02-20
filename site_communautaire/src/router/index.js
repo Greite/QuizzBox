@@ -22,6 +22,6 @@ export default new Router({
 		path: '/quizz-creation',
 		name: 'QuizzCreation',
 		component: QuizzCreation
-	},
+	}
 	]
 })
