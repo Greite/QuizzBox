@@ -46,4 +46,8 @@ $app->get('/themes[/]','\quizz\control\QuizzController:theme');
 
 $app->get('/themes/{id}/quizz','\quizz\control\QuizzController:quizz');
 
+$app->post('quizz','\quizz\control\QuizzController:addQuizz');
+
+$app->get('/questions/{id}/reponses','\quizz\control\QuizzController:questions');
+
 $app->run();
