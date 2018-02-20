@@ -44,4 +44,6 @@ $app->get('/users/{id}[/]','\quizz\control\QuizzController:user');
 
 $app->get('/themes[/]','\quizz\control\QuizzController:theme');
 
+$app->get('/themes/{id}/quizz','\quizz\control\QuizzController:quizz');
+
 $app->run();

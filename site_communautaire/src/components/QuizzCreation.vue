@@ -1,11 +1,6 @@
 <template>
 	<div class="row">
-		<form class="col s6 offset-s3">
-				<select>
-					<option value="1">Test 1</option>
-					<option value="2">Test 2</option>
-					<option value="3">Option 3</option>
-				</select>
+		<form class="col s6 offset-s3" id="quizzform">
 			<div class="row">
 				<div class="input-field col s12">
 					<input id="nom" v-model="nom" type="text" class="validate">

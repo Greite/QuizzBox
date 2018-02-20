@@ -32,6 +32,7 @@
 </template>
 
 <script>   
+
 export default {
 	name: 'Navbar',
 	data () {
@@ -44,6 +45,12 @@ export default {
 		}
 	}
 }
+
+$( document ).ready(function(){
+	$(".button-collapse").sideNav();
+	$('.tooltipped').tooltip({delay: 50});
+});
+
 </script>
 
 <style scoped>
