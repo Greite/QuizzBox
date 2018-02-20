@@ -4,7 +4,7 @@
 			<a href="#!" class="brand-logo">Site communautaire - QuizzBox</a>
 			<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 			<ul class="right hide-on-med-and-down">
-				<li><a href="#/inscription" class="grey-text lighten-4">Inscription</a></li>
+				<li><a href="#/inscription">Inscription</a></li>
 				<li><a href="#/connexion">Connexion</a></li>
 			</ul>
 			<ul class="side-nav" id="mobile-demo">
