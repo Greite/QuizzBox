@@ -1,28 +1,20 @@
 <template>
   <div class="row">
-    <form class="col s6 offset-s3" @submit="creerQuizz">
-      <div class="row">
-        <div class="input-field col s12">
-         <select>
-           <option value="" disabled selected>Choose your option</option>
-           <option value="1">Option 1</option>
-           <option value="2">Option 2</option>
-           <option value="3">Option 3</option>
-         </select>
-    <label>Materialize Select</label>
-  </div>
-  </div>
+    <form class="col s6 offset-s3" @submit="creerQuizz">   
       <div class="row">
         <div class="input-field col s12">
           <input id="nom" v-model="nom" type="text" class="validate">
           <label for="nom">Nom</label>
         </div>
       </div>
-      <div class="row">
-      <div class="input-field col s6">
-        <input id="question" v-model="question" type="text" class="validate">
-        <label for="question">Question</label>
+      <div>
+        <label>Thème</label>
+        <select id="theme" v-model="theme" class="browser-default">
+          <option v-for="theme in themes" v-bind:value="theme.id">{{theme.nom}}</option>
+        </select>
       </div>
+      <div class="row">
+      <quizzQuestion v-for="question of questions" :key="question._id" :question="question"></quizzQuestion>
       </div>
       <div class="row">
         <button class="btn-large waves-effect waves-light col s4 offset-s4" type="submit" name="action">Créer le quizz
@@ -34,8 +26,12 @@
 </template>
 
 <script>
+
+import QuizzQuestion from './QuizzQuestion.vue'
+
 export default {
-  name: 'ConversationCreation',
+  name: 'QuizzCreation',
+  components: {QuizzQuestion},
   data () {
     return {
       nom: '',
@@ -46,8 +42,8 @@ export default {
     }
   },
   mounted () {
-    window.axios.get('themes').then(response => {
-      this.themes = response.data.themes    
+    window.axios.get('themes').then(response => { 
+      this.themes = response.data.themes  
     })
   },
   methods: {
