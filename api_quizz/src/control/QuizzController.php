@@ -112,19 +112,19 @@ class QuizzController {
 
     public function theme(Request $req, Response $resp, $args){
         try {
-            $theme = Theme::all();
+            $themes = Theme::all();
         } catch (ModelNotFoundException $e) {
             $resp = $resp->withStatus(404);
-            $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Ressource non disponible : /series/'.$args['id']));
+            $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Ressource non disponible : /themes/'.$args['id']));
             return $resp;
         }
-        $tabserie=[
+        $tabtheme=[
             "type"=>"ressource",
             "meta"=>[$date=date('d/m/y')],
-            "serie"=>$theme,
+            "themes"=>$themes,
         ];
         $resp = $resp->withStatus(200);
-        $resp = $resp->withJson($tabserie);
+        $resp = $resp->withJson($tabtheme);
         return $resp;
     }
 
@@ -133,16 +133,16 @@ class QuizzController {
             $quizz = Quizz::where('id','=',$args['id'])->with('questions')->get();
         } catch (ModelNotFoundException $e) {
             $resp = $resp->withStatus(404);
-            $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Ressource non disponible : /series/'.$args['id']));
+            $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Ressource non disponible : /quizz/'.$args['id']));
             return $resp;
         }
-        $tabserie=[
+        $tabquizz=[
             "type"=>"ressource",
             "meta"=>[$date=date('d/m/y')],
             "quizz"=>$quizz,
         ];
         $resp = $resp->withStatus(200);
-        $resp = $resp->withJson($tabserie);
+        $resp = $resp->withJson($tabquizz);
         return $resp;
     }
 
@@ -252,7 +252,7 @@ class QuizzController {
         }
     }*/
 
-    public function getSeries(Request $req, Response $resp, $args){
+    /*public function getSeries(Request $req, Response $resp, $args){
         
         $series = Serie::all();
         $t = count($series);
@@ -266,5 +266,5 @@ class QuizzController {
         $resp = $resp->withJson($tabseries);
         
         return $resp;
-    }
+    }*/
 }

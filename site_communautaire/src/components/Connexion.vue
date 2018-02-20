@@ -14,7 +14,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<button class="btn-large waves-effect waves-light col s4 offset-s4" type="submit" name="action">Connexion
+				<button class="btn-large waves-effect waves-light col s4 offset-s4" type="submit">Connexion
 					<i class="material-icons right">done</i>
 				</button>
 			</div>

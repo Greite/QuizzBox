@@ -1,6 +1,6 @@
 <template>
 	<nav v-if="!this.$store.state.member">
-		<div class="nav-wrapper">
+		<div class="nav-wrapper grey darken-3">
 			<a href="#!" class="brand-logo">Site communautaire - QuizzBox</a>
 			<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 			<ul class="right hide-on-med-and-down">
@@ -14,7 +14,7 @@
 		</div>
 	</nav>
 	<nav v-else>
-		<div class="nav-wrapper">
+		<div class="nav-wrapper grey darken-3">
 			<a href="#!" class="brand-logo">Site communautaire - QuizzBox</a>
 			<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 			<ul class="right hide-on-med-and-down">
@@ -49,7 +49,7 @@ export default {
 $( document ).ready(function(){
 	$(".button-collapse").sideNav();
 	$('.tooltipped').tooltip({delay: 50});
-})
+});
 
 </script>
 
