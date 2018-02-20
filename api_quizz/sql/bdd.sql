@@ -48,6 +48,11 @@ CREATE TABLE `theme` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+INSERT INTO `theme` (`id`, `nom`, `description`) VALUES
+('6a830f22-15a8-11e8-9896-0242ac1a0002',	'Histoire',	'Des quizz pour Jean-Napoléon !'),
+('7a33ec02-15a8-11e8-9896-0242ac1a0002',	'Sport',	'Des quizz pour Jean-Zinédine !'),
+('8cb3c075-15a8-11e8-9896-0242ac1a0002',	'Jeux vidéos',	'Des quizz pour Jean-Pacman !'),
+('a8de01fb-15a8-11e8-9896-0242ac1a0002',	'Art',	'Des quizz pour Jean-Pablo !');
 
 DROP TABLE IF EXISTS `theme2quizz`;
 CREATE TABLE `theme2quizz` (
@@ -69,5 +74,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+INSERT INTO `user` (`id`, `login`, `password`, `mail`) VALUES
+('32a4d78c-75c7-4bc1-bc81-2a55b5afde17',	'Michel',	'$2y$10$QgcFe0lt/crzktNQ0KUcjO3iyPYdNaYxt1LfwfFl04EZax4H.ASQW',	'michel@cestlebresil.samba');
 
--- 2018-02-15 14:25:27
+-- 2018-02-20 14:02:02
