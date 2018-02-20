@@ -14,10 +14,15 @@
 				</select>
 			</div>
 			<div class="row">
-				<quizzQuestion v-for="question of questions" :key="question._id" :question="question"></quizzQuestion>
+				<quizzQuestion v-for="n in range"></quizzQuestion>
 			</div>
 			<div class="row">
-				<button class="btn-large waves-effect waves-light col s4 offset-s4" type="submit" name="action">Créer le quizz
+				<button class="btn-large waves-effect waves-light col s4 offset-s4" @click="ajouterQuestion">Ajouter une question
+					<i class="material-icons right">send</i>
+				</button>
+			</div>
+			<div class="row">
+				<button class="btn-large waves-effect waves-light col s4 offset-s4" type="submit">Créer le quizz
 					<i class="material-icons right">send</i>
 				</button>
 			</div>
@@ -38,7 +43,8 @@ export default {
 			themes : [],
 			theme : '',
 			questions : [],
-			question : ''
+			question : '',
+			range:0
 		}
 	},
 	mounted () {
@@ -54,6 +60,9 @@ export default {
 			}).then(response => {
 				this.$router.push({path: '/accueil'});  
 			})
+		},
+		ajouterQuestion() {
+			this.range += 1
 		}
 	}
 }
