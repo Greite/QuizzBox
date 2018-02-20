@@ -13,13 +13,12 @@
 					<option v-for="theme in themes" v-bind:value="theme.id">{{theme.nom}}</option>
 				</select>
 			</div>
-			<div class="row">
-				<quizzQuestion v-for="n in range"></quizzQuestion>
+			<div class="row" v-for="n in nbQuestion">
+				<h3>Question n°{{n}}</h3>
+				<quizzQuestion></quizzQuestion>
 			</div>
 			<div class="row">
-				<button class="btn-large waves-effect waves-light col s4 offset-s4" @click="ajouterQuestion">Ajouter une question
-					<i class="material-icons right">send</i>
-				</button>
+				<a class="btn-floating btn-large waves-effect waves-light red" @click="ajoutQuestion"><i class="material-icons">add</i></a>
 			</div>
 			<div class="row">
 				<button class="btn-large waves-effect waves-light col s4 offset-s4" type="submit">Créer le quizz
@@ -44,7 +43,7 @@ export default {
 			theme : '',
 			questions : [],
 			question : '',
-			range:0
+			nbQuestion: 1
 		}
 	},
 	mounted () {
@@ -61,11 +60,16 @@ export default {
 				this.$router.push({path: '/accueil'});  
 			})
 		},
-		ajouterQuestion() {
-			this.range += 1
+		ajoutQuestion(){
+			this.nbQuestion++
 		}
 	}
 }
+
+
+$(document).ready(function(){
+	$('ul.tabs').tabs();
+});
 </script>
 
 <style scoped>
