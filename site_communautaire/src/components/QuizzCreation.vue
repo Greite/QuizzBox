@@ -14,7 +14,7 @@
 				</select>
 			</div>
 			<div class="row" v-for="n in nbQuestion">
-				<h3>Question n°{{n}}</h3>
+				<h4>Question n°{{n}}</h4>
 				<quizzQuestion></quizzQuestion>
 			</div>
 			<div class="row">
