@@ -27,6 +27,13 @@ CREATE TABLE `quizz` (
   CONSTRAINT `quizz_ibfk_1` FOREIGN KEY (`id_createur`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+INSERT INTO `quizz` (`id`, `nom`, `id_createur`) VALUES
+('2c5c4bfd-2215-11e8-bbfa-0242ac1a0002',	'La Coupe du Monde de football',	'32a4d78c-75c7-4bc1-bc81-2a55b5afde17'),
+('3f9e4072-2215-11e8-bbfa-0242ac1a0002',	'La Nintendo GameCube',	'32a4d78c-75c7-4bc1-bc81-2a55b5afde17'),
+('52209571-2215-11e8-bbfa-0242ac1a0002',	'Les peintres du XIXe siècle',	'32a4d78c-75c7-4bc1-bc81-2a55b5afde17'),
+('83f877a2-2215-11e8-bbfa-0242ac1a0002',	'Culture vidéoludique',	'32a4d78c-75c7-4bc1-bc81-2a55b5afde17'),
+('c2d75e9d-2214-11e8-bbfa-0242ac1a0002',	'La 1ère guerre mondiale',	'32a4d78c-75c7-4bc1-bc81-2a55b5afde17'),
+('df0077a7-2213-11e8-bbfa-0242ac1a0002',	'La Révolution française',	'32a4d78c-75c7-4bc1-bc81-2a55b5afde17');
 
 DROP TABLE IF EXISTS `reponse`;
 CREATE TABLE `reponse` (
@@ -64,6 +71,13 @@ CREATE TABLE `theme2quizz` (
   CONSTRAINT `theme2quizz_ibfk_2` FOREIGN KEY (`id_quizz`) REFERENCES `quizz` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+INSERT INTO `theme2quizz` (`id_quizz`, `id_theme`) VALUES
+('df0077a7-2213-11e8-bbfa-0242ac1a0002',	'6a830f22-15a8-11e8-9896-0242ac1a0002'),
+('c2d75e9d-2214-11e8-bbfa-0242ac1a0002',	'6a830f22-15a8-11e8-9896-0242ac1a0002'),
+('2c5c4bfd-2215-11e8-bbfa-0242ac1a0002',	'7a33ec02-15a8-11e8-9896-0242ac1a0002'),
+('83f877a2-2215-11e8-bbfa-0242ac1a0002',	'8cb3c075-15a8-11e8-9896-0242ac1a0002'),
+('3f9e4072-2215-11e8-bbfa-0242ac1a0002',	'8cb3c075-15a8-11e8-9896-0242ac1a0002'),
+('52209571-2215-11e8-bbfa-0242ac1a0002',	'a8de01fb-15a8-11e8-9896-0242ac1a0002');
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
@@ -77,4 +91,4 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `login`, `password`, `mail`) VALUES
 ('32a4d78c-75c7-4bc1-bc81-2a55b5afde17',	'Michel',	'$2y$10$QgcFe0lt/crzktNQ0KUcjO3iyPYdNaYxt1LfwfFl04EZax4H.ASQW',	'michel@cestlebresil.samba');
 
--- 2018-02-20 14:02:02
+-- 2018-03-07 17:36:23
