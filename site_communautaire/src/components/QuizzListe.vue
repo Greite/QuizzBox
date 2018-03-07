@@ -2,7 +2,11 @@
 	<div class="row">
 		<ul class="collection with-header">
         <li class="collection-header"><h4>Thèmes</h4></li>
-        <li class="collection-item" v-for="theme in themes">{{theme.nom}}</li>
+        <li class="collection-item" v-for="theme in themes">{{theme.nom}}
+          <div v-for="quizz in theme.quizz">
+            {{quizz.nom}}
+          </div>
+        </li>
       </ul>
 	</div>
 </template>
