@@ -43,7 +43,7 @@ export default {
 			theme : '',
 			questions : [],
 			question : '',
-			nbQuestion: 1
+			nbQuestion: 1,
 		}
 	},
 	mounted () {
@@ -57,7 +57,16 @@ export default {
 				nom: this.nom,
 				theme: this.theme,
 			}).then(response => {
-				this.$router.push({path: '/accueil'});  
+				window.axios.post('questions', {
+					intitule: this.question.intitule,
+					theme: this.theme,
+				}).then(response => {
+					window.axios.post('reponses', {
+					reponses: this.reponses,
+					}).then(response => {
+						this.$router.push({path: '/accueil'});  
+					})
+				})
 			})
 		},
 		ajoutQuestion(){

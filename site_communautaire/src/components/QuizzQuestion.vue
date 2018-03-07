@@ -35,8 +35,11 @@ export default {
   name: 'QuizzQuestion',
   data () {
 	return {
-	  intitule : '',
-	  reponses : [],
+		intitule: '',
+		reponse1: '',
+		reponse2: '',
+		reponse3: '',
+		reponse4: '',
 	}
   },
   mounted () {

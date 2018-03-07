@@ -2,7 +2,11 @@
   <div class="row">
       <h3>Thèmes</h3>
       <div class="row">
-        <p v-for="theme in themes">{{theme.nom}}</p>
+        <div v-for="theme in themes"><h4>{{theme.nom}}</h4>
+          <div v-for="quizz in theme.quizz">{{quizz.nom}}
+
+          </div>
+        </div>
       </div>
   </div>
 
@@ -14,18 +18,14 @@ export default {
   name: 'QuizzListe',
   data () {
     return {
-      quizz : [],
-      quiz: '',
+      quizz : '',
       themes: [],
       theme : ''
     }
   },
   mounted() {
     window.axios.get('themes').then(response => { 
-      this.themes = response.data.themes  
-    })
-    window.axios.get('quizz').then(response => { 
-      this.quizz = response.data.quizz  
+      this.themes = response.data.themes
     })
   },
   methods: {
