@@ -128,7 +128,25 @@ class QuizzController {
         return $resp;
     }
 
-    public function quizz(Request $req, Response $resp, $args){
+    public function getQuizz(Request $req, Response $resp, $args){
+        try {
+            $quizz = Quizz::all();
+        } catch (ModelNotFoundException $e) {
+            $resp = $resp->withStatus(404);
+            $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Ressource non disponible : /quizz/'));
+            return $resp;
+        }
+        $tabquizz=[
+            "type"=>"collection",
+            "meta"=>[$date=date('d/m/y')],
+            "quizz"=>$quizz,
+        ];
+        $resp = $resp->withStatus(200);
+        $resp = $resp->withJson($tabquizz);
+        return $resp;
+    }
+
+    public function getQuizzId(Request $req, Response $resp, $args){
         try {
             $quizz = Quizz::where('id','=',$args['id'])->with('questions')->get();
         } catch (ModelNotFoundException $e) {
@@ -163,108 +181,4 @@ class QuizzController {
         $resp = $resp->withJson($tabquest);
         return $resp;
     }
-
-
-        /*public function addPhoto(Request $req, Response $resp, $args){
-            try {
-                $secret = "geoquizz";
-                $h = $req->getHeader('Authorization')[0];
-                $tokenstring = sscanf($h, "Bearer %s")[0];
-                $token = JWT::decode($tokenstring, $secret, ['HS512']);
-
-                try{
-                    User::findOrFail($token->id);
-                }catch(ModelNotFoundException $e){
-
-                    $resp = $resp->withStatus(401);
-                    $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Le token ne correspond pas"));
-                    return $resp;
-                }
-                $parsedBody = $req->getParsedBody();
-                $photo = new Photo;
-                $photo->url = filter_var($parsedBody['url'], FILTER_SANITIZE_SPECIAL_CHARS);
-                $photo->longitude = filter_var($parsedBody['longitude'], FILTER_SANITIZE_SPECIAL_CHARS);
-                $photo->latitude = filter_var($parsedBody['latitude'], FILTER_SANITIZE_SPECIAL_CHARS);
-                $photo->id_ville = filter_var($parsedBody['id_ville'], FILTER_SANITIZE_SPECIAL_CHARS);
-                $photo->save();
-                $resp = $resp->withStatus(201);
-                $resp = $resp->withJson(array('photo' => array('url' => $photo->url, 'longitude' => $photo->longitude, 'latitude' => $photo->latitude, 'id_ville' => $photo->id_ville)));
-                return $resp;
-            }catch(ExpiredException $e) {
-                $resp = $resp->withStatus(401);
-                $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "L'authentification a expirée"));
-                return $resp;
-            }catch(SignatureInvalidException $e) {
-                $resp = $resp->withStatus(401);
-                $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Mauvaise signature"));
-                return $resp;
-            }catch(BeforeValidException $e) {
-                $resp = $resp->withStatus(401);
-                $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
-                return $resp;
-            }catch(UnexpectedValueException $e) {
-                $resp = $resp->withStatus(401);
-                $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
-                return $resp;
-            }
-        }*/
-
-    /*public function addSerie(Request $req, Response $resp, $args){
-        try {
-            $secret = "geoquizz";
-            $h = $req->getHeader('Authorization')[0];
-            $tokenstring = sscanf($h, "Bearer %s")[0];
-            $token = JWT::decode($tokenstring, $secret, ['HS512']);
-            try{
-                User::findOrFail($token->id);
-            }catch(ModelNotFoundException $e){
-                $resp = $resp->withStatus(401);
-                $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Le token ne correspond pas"));
-                return $resp;
-            }
-            $parsedBody = $req->getParsedBody();
-            $serie = new Serie;
-            $uuid4 = Uuid::uuid4();
-            $serie->id = $uuid4;
-            $serie->ville = filter_var($parsedBody['ville'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $serie->longitude = filter_var($parsedBody['longitude'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $serie->latitude = filter_var($parsedBody['latitude'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $serie->save();
-            $resp = $resp->withStatus(201);
-            $resp = $resp->withJson(array('serie' => array('id' => $serie->id, 'ville' => $serie->ville, 'longitude' => $serie->longitude, 'latitude' => $serie->latitude)));
-            return $resp;
-        }catch(ExpiredException $e) {
-            $resp = $resp->withStatus(401);
-            $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "La carte a expirée"));
-            return $resp;
-        }catch(SignatureInvalidException $e) {
-            $resp = $resp->withStatus(401);
-            $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Mauvaise signature"));
-            return $resp;
-        }catch(BeforeValidException $e) {
-            $resp = $resp->withStatus(401);
-            $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
-            return $resp;
-        }catch(\UnexpectedValueException $e) {
-            $resp = $resp->withStatus(401);
-            $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
-            return $resp;
-        }
-    }*/
-
-    /*public function getSeries(Request $req, Response $resp, $args){
-        
-        $series = Serie::all();
-        $t = count($series);
-        $resp = $resp->withHeader('Content-Type', "application/json;charset=utf-8");
-        $tabseries = [
-            "type"=>'collection',
-            "meta"=>[$date=date('d/m/y'),"count"=>$t],
-            "series"=>$series
-        ];
-        $resp = $resp->withStatus(200);
-        $resp = $resp->withJson($tabseries);
-        
-        return $resp;
-    }*/
 }
