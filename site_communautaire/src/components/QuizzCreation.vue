@@ -14,7 +14,7 @@
 				</select>
 			</div>
 			<div class="row" v-for="n in nbQuestion">
-				<h1>Question n°{{n}}</h1>
+				<h4>Question n°{{n}}</h4>
 				<quizzQuestion></quizzQuestion>
 			</div>
 			<div class="row">
@@ -24,7 +24,7 @@
 				</center>
 			</div>
 			<div class="row">
-				<button class="btn-large waves-effect waves-light col s8 offset-s2" type="submit" name="action">Créer le quizz
+				<button class="btn-large waves-effect waves-light col s4 offset-s4" type="submit">Créer le quizz
 					<i class="material-icons right">send</i>
 				</button>
 			</div>
@@ -45,7 +45,7 @@ export default {
 			themes : [],
 			theme : '',
 			question : '',
-			nbQuestion: 1
+			nbQuestion: 1,
 		}
 	},
 	mounted () {
@@ -59,7 +59,16 @@ export default {
 				nom: this.nom,
 				theme: this.theme
 			}).then(response => {
-				
+				window.axios.post('questions', {
+					intitule: this.question.intitule,
+					theme: this.theme,
+				}).then(response => {
+					window.axios.post('reponses', {
+					reponses: this.reponses,
+					}).then(response => {
+						this.$router.push({path: '/accueil'});  
+					})
+				})
 			})
 		},
 		ajoutQuestion(){

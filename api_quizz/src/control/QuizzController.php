@@ -32,7 +32,7 @@ class QuizzController {
         $user->save();
         $resp = $resp->withStatus(201);
         $resp = $resp->withHeader('Location', "/user/".$user->id);
-        $resp = $resp->withHeader('Access-Control-Allow-Origin', $request->getHeader('Origin')[0]);
+        $resp = $resp->withHeader('Access-Control-Allow-Origin', $req->getHeader('Origin')[0]);
         $resp = $resp->withJson(array('user' => array('id' => $user->id, 'login' => $user->login, 'mail' => $user->mail)));
         return $resp;
 
@@ -112,7 +112,7 @@ class QuizzController {
 
     public function theme(Request $req, Response $resp, $args){
         try {
-            $themes = Theme::all();
+            $themes = Theme::with('quizz')->get();
         } catch (ModelNotFoundException $e) {
             $resp = $resp->withStatus(404);
             $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Ressource non disponible : /themes/'.$args['id']));
@@ -146,6 +146,23 @@ class QuizzController {
         return $resp;
     }
 
+    public function questions(Request $req, Response $resp, $args){
+        try {
+            $quest = Question::where('id','=',$args['id'])->with('reponses')->get();
+        } catch (ModelNotFoundException $e) {
+            $resp = $resp->withStatus(404);
+            $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Ressource non disponible : /questions/'.$args['id']));
+            return $resp;
+        }
+        $tabquest=[
+            "type"=>"ressource",
+            "meta"=>[$date=date('d/m/y')],
+            "quizz"=>$quest,
+        ];
+        $resp = $resp->withStatus(200);
+        $resp = $resp->withJson($tabquest);
+        return $resp;
+    }
 
 
         /*public function addPhoto(Request $req, Response $resp, $args){

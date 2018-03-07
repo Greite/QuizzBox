@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Connexion from '@/components/Connexion'
 import Inscription from '@/components/Inscription'
 import QuizzCreation from '@/components/QuizzCreation'
+import QuizzListe from '@/components/QuizzListe'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
 		path: '/quizz-creation',
 		name: 'QuizzCreation',
 		component: QuizzCreation
+	},
+	{
+		path: '/quizz-liste',
+		name: 'QuizzListe',
+		component: QuizzListe
 	}
 	]
 })
