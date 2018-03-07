@@ -112,7 +112,7 @@ class QuizzController {
 
     public function theme(Request $req, Response $resp, $args){
         try {
-            $themes = Theme::all();
+            $themes = Theme::with('quizz')->get();
         } catch (ModelNotFoundException $e) {
             $resp = $resp->withStatus(404);
             $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Ressource non disponible : /themes/'.$args['id']));

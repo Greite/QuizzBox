@@ -31,17 +31,21 @@
 
 <script>
 export default {
-	name: 'QuizzQuestion',
-	data () {
-		return {
-			intitule : '',
-			reponses : []
-		}
-	},
-	mounted () {
-	},
-	methods: {
+  name: 'QuizzQuestion',
+  data () {
+	return {
+		intitule: '',
+		reponse1: '',
+		reponse2: '',
+		reponse3: '',
+		reponse4: '',
 	}
+  },
+  mounted () {
+  },
+  methods: {
+  }
+
 }
 </script>
 

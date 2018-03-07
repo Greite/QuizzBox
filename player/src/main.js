@@ -3,13 +3,18 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+//import socketio from 'socket.io';
+import socketio from 'socket.io-client';
+import VueSocketIO from 'vue-socket.io';
 
 Vue.config.productionTip = false
 
+Vue.use(VueSocketIO, socketio('http://localhost:3000'))
+
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
+	el: '#app',
+	router,
+	components: { App },
+	template: '<App/>'
 })
