@@ -42,7 +42,7 @@ $app->post('/users/signin[/]','\quizz\control\QuizzController:login');
 
 $app->get('/users/{id}[/]','\quizz\control\QuizzController:user');
 
-$app->get('/themes[/]','\quizz\control\QuizzController:theme');
+$app->get('/themes[/]','\quizz\control\QuizzController:getThemesWithQuizz');
 
 $app->get('/quizz','\quizz\control\QuizzController:getQuizz');
 
@@ -50,6 +50,6 @@ $app->get('/quizz/{id}','\quizz\control\QuizzController:getQuizzId');
 
 $app->post('/quizz','\quizz\control\QuizzController:addQuizz');
 
-$app->get('/questions/{id}/reponses','\quizz\control\QuizzController:questions');
+$app->get('/questions/{id}/reponses','\quizz\control\QuizzController:getQuestionId');
 
 $app->run();

@@ -110,7 +110,7 @@ class QuizzController {
         }
     }
 
-    public function theme(Request $req, Response $resp, $args){
+    public function getThemesWithQuizz(Request $req, Response $resp, $args){
         try {
             $themes = Theme::with('quizz')->get();
         } catch (ModelNotFoundException $e) {
@@ -164,7 +164,7 @@ class QuizzController {
         return $resp;
     }
 
-    public function questions(Request $req, Response $resp, $args){
+    public function getQuestionId(Request $req, Response $resp, $args){
         try {
             $quest = Question::where('id','=',$args['id'])->with('reponses')->get();
         } catch (ModelNotFoundException $e) {
@@ -180,5 +180,49 @@ class QuizzController {
         $resp = $resp->withStatus(200);
         $resp = $resp->withJson($tabquest);
         return $resp;
+    }
+
+    //A COMPLETER POUR ADDQUIZZ: insertion table pivot et recuperation id_createur
+
+    public function addQuizz(Request $req, Response $resp, $args){
+        try {
+            $secret = "quizzbox";
+            $h = $req->getHeader('Authorization')[0];
+            $tokenstring = sscanf($h, "Bearer %s")[0];
+            $token = JWT::decode($tokenstring, $secret, ['HS512']);
+            try{
+                User::findOrFail($token->id);
+            }catch(ModelNotFoundException $e){
+                $resp = $resp->withStatus(401);
+                $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Le token ne correspond pas"));
+                return $resp;
+            }
+            $parsedBody = $req->getParsedBody();
+            $quizz = new Quizz;
+            $uuid4 = Uuid::uuid4();
+            $quizz->id = $uuid4;
+            $quizz->nom = filter_var($parsedBody['nom'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $quizz->id_createur = filter_var($parsedBody['id_createur'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $quizz->save();
+            $resp = $resp->withStatus(201);
+            $resp = $resp->withJson(array('quizz' => array('id' => $quizz->id, 'nom' => $quizz->nom, 'id_createur' => $quizz->id_createur)));
+            return $resp;
+        }catch(ExpiredException $e) {
+            $resp = $resp->withStatus(401);
+            $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "La carte a expirée"));
+            return $resp;
+        }catch(SignatureInvalidException $e) {
+            $resp = $resp->withStatus(401);
+            $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Mauvaise signature"));
+            return $resp;
+        }catch(BeforeValidException $e) {
+            $resp = $resp->withStatus(401);
+            $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
+            return $resp;
+        }catch(\UnexpectedValueException $e) {
+            $resp = $resp->withStatus(401);
+            $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
+            return $resp;
+        }
     }
 }
