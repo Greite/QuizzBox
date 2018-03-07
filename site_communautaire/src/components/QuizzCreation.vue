@@ -18,10 +18,13 @@
 				<quizzQuestion></quizzQuestion>
 			</div>
 			<div class="row">
-				<a class="btn-floating btn-large waves-effect waves-light red" @click="ajoutQuestion"><i class="material-icons">add</i></a>
+				<center>
+					<a class="btn-floating btn-large waves-effect waves-light red" @click="ajoutQuestion"><i class="material-icons">exposure_plus_1</i></a>
+					<a class="btn-floating btn-large waves-effect waves-light red" @click="supprQuestion"><i class="material-icons">exposure_neg_1</i></a>
+				</center>
 			</div>
 			<div class="row">
-				<button class="btn-large waves-effect waves-light col s4 offset-s4" type="submit" name="action">Créer le quizz
+				<button class="btn-large waves-effect waves-light col s8 offset-s2" type="submit" name="action">Créer le quizz
 					<i class="material-icons right">send</i>
 				</button>
 			</div>
@@ -41,7 +44,6 @@ export default {
 			nom: '',
 			themes : [],
 			theme : '',
-			questions : [],
 			question : '',
 			nbQuestion: 1
 		}
@@ -55,13 +57,18 @@ export default {
 		creerQuizz() {   
 			window.axios.post('quizz', {
 				nom: this.nom,
-				theme: this.theme,
+				theme: this.theme
 			}).then(response => {
-				this.$router.push({path: '/accueil'});  
+				
 			})
 		},
 		ajoutQuestion(){
 			this.nbQuestion++
+		},
+		supprQuestion(){
+			if (this.nbQuestion!=1) {
+				this.nbQuestion--
+			}
 		}
 	}
 }

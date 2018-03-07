@@ -35,7 +35,10 @@ export default {
 	data () {
 		return {
 			intitule : '',
-			reponses : []
+			reponse1: '',
+			reponse2: '',
+			reponse3: '',
+			reponse4: ''
 		}
 	},
 	mounted () {
