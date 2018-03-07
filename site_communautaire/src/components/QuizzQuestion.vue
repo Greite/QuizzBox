@@ -31,7 +31,6 @@
 
 <script>
 export default {
-
   name: 'QuizzQuestion',
   data () {
 	return {
