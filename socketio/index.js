@@ -1,6 +1,7 @@
 var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var pseudos = [];
 
 server.listen(3000);
 
@@ -9,8 +10,13 @@ app.get('/', function (req, res) {
 });
 
 io.on('connection', function (socket) {
-	socket.on('pingServer', function (socket) {
-		console.log("Pong !")
-		io.emit('messageChannel', "Pong!")
+
+	socket.on('nouveau_joueur',function(pseudo){
+		pseudos.push(pseudo)
+		io.emit('savePseudo',pseudos)
+	});
+
+	socket.on('commencer',function(){
+		io.emit('demarrer');
 	});
 });
