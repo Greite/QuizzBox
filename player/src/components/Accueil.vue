@@ -5,7 +5,6 @@
 				<div class="card-content black-text">
 					<span class="card-title">Accueil</span>
 					<p>Bienvenue sur le player QuizzBox</p>
-					<p v-if="isConnected">We're connected to the server!</p>
 				</div>
 				<div class="card-action" v-if="inputPseudo">
 					<p>Veuillez choisir un pseudo</p>
@@ -26,12 +25,20 @@
 						<img src="../assets/ic_account_circle_black_48dp_1x.png" alt="Player">
 						{{p}}
 					</div>
-				
+
+					<h4>Thèmes</h4>
+			        <ul class="collapsible" data-collapsible="expendable">
+					    <li v-for="t in themes">
+					      <div class="collapsible-header" >{{t.nom}}</div>
+					      <div class="collapsible-body" v-for="quizz in t.quizz" @click='selectQuizz(quizz.id)'>{{quizz.nom}}</div>
+					    </li>
+				    </ul>
 				</div>
+		   
 				<div class="card-action">
 					<div class="row">
-						<button @click="commencerPartie">Commencer la partie</button>
 						<center>
+							<button class="btn " @click="commencerPartie">Commencer la partie</button>
 							<h3>En attente d'autres joueurs !</h3>
 						</center>
 					</div>
@@ -54,21 +61,17 @@ export default {
 		return {
 			pseudo: '',
 			pseudos : [],
+			themes : [],
 			socketMessage: '',
-			isConnected: false,
 			inputPseudo: true
 		}
 	},
 	mounted(){
-		
+		window.axios.get('themes').then(response => { 
+			this.themes = response.data.themes
+		})
 	},
 	sockets: {
-		connect() {
-			this.isConnected = true;
-		},
-		disconnect() {
-			this.isConnected = false;
-		},
 		savePseudo(data) {
 			this.pseudos = data
 		},
@@ -84,6 +87,9 @@ export default {
 		},
 		commencerPartie(){
 			this.$socket.emit('commencer')
+		},
+		selectQuizz(id){
+			console.log(id)
 		}
 	}
 }

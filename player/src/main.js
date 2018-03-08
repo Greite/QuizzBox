@@ -3,9 +3,13 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-//import socketio from 'socket.io';
 import socketio from 'socket.io-client';
 import VueSocketIO from 'vue-socket.io';
+import axios from 'axios'
+
+window.axios = axios.create({
+	baseURL: 'http://api.quizzbox.local:10080'
+});
 
 Vue.config.productionTip = false
 
