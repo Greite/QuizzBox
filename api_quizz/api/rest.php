@@ -42,12 +42,14 @@ $app->post('/users/signin[/]','\quizz\control\QuizzController:login');
 
 $app->get('/users/{id}[/]','\quizz\control\QuizzController:user');
 
-$app->get('/themes[/]','\quizz\control\QuizzController:theme');
+$app->get('/themes[/]','\quizz\control\QuizzController:getThemesWithQuizz');
 
-$app->get('/themes/{id}/quizz','\quizz\control\QuizzController:quizz');
+$app->get('/quizz','\quizz\control\QuizzController:getQuizz');
 
-$app->post('quizz','\quizz\control\QuizzController:addQuizz');
+$app->get('/quizz/{id}','\quizz\control\QuizzController:getQuizzId');
 
-$app->get('/questions/{id}/reponses','\quizz\control\QuizzController:questions');
+$app->post('/quizz','\quizz\control\QuizzController:addQuizz');
+
+$app->get('/questions/{id}/reponses','\quizz\control\QuizzController:getQuestionId');
 
 $app->run();
