@@ -30,7 +30,7 @@
 						<div class="card-action">
 							<div class="row">
 								<center>
-									<h3>En attente d'autres joueurs !</h3>
+									<p>En attente d'autres joueurs !</p>
 								</center>
 							</div>
 							<div class="row">
@@ -40,88 +40,92 @@
 							</div>
 						</div>
 						<div v-if="pseudo === pseudos[0]">
-							<h4>Tu es le maître du jeu ! <br></br> Choisis un thème et commence.</h4>
-					        <ul class="collection">
-							    <li class="collection-item" v-for="t in themes">
-							      <div class="title"><b>{{t.nom}}</b></div>
-							      <div class="btn" v-for="quizz in t.quizz" @click='selectQuizz(quizz.id,quizz.nom)'>{{quizz.nom}}</div>
-							    </li>
-						    </ul>
-						    <div>Quizz sélectionné : {{nomQuizz}}</div>
+							<center><h5>Tu es le maître du jeu !</h5>
+								<p><b>Choisis un thème et commence.</b></p></center>
+								<ul class="collection">
+									<li class="collection-item" v-for="t in themes">
+										<center><div class="title"><b>{{t.nom}}</b></div></center>
+										<center><div class="btn" v-for="quizz in t.quizz" @click='selectQuizz(quizz.id,quizz.nom)'>{{quizz.nom}}</div></center>
+									</li>
+								</ul>
+								<div><center>Quizz sélectionné : {{nomQuizz}}</center></div>
 
-						    <center v-if="nomQuizz !== ''"><button class="btn" @click="commencerPartie">Commencer la partie</button></center>
-						</div>
-						<div v-else>
-							<p> Trop tard, tu n'es pas le maître du jeu ! Tu dois attendre sa décision !</p>
-							<div>Liste des quizz</div>
-							<ul class="collection">
-							    <li class="collection-item" v-for="t in themes">
-							      <div class="title"><b>{{t.nom}}</b></div>
-							      <div class="btn" v-for="quizz in t.quizz">{{quizz.nom}}</div>
-							     </li>
-							</ul>
-							<div>Quizz sélectionné par le maître du jeu : {{nomQuizz}}</div>
+								<center v-if="nomQuizz !== '' && pseudos.length >= 1"><button class="btn" @click="commencerPartie">Commencer la partie</button></center>
+							</div>
+							<div v-else>
+								<center><h5>Tu n'es pas le maître du jeu ! Attends sa décision !</h5></center>
+								<div>Liste des quizz</div>
+								<ul class="collection">
+									<li class="collection-item" v-for="t in themes">
+										<center><div class="title"><b>{{t.nom}}</b></div></center>
+										<center><div class="btn" v-for="quizz in t.quizz" @click='selectQuizz(quizz.id,quizz.nom)'>{{quizz.nom}}</div></center>
+									</li>
+								</ul>
+								<div><center>Quizz sélectionné par le maître du jeu : {{nomQuizz}}</center></div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</template>
+	</template>
 
-<script>
+	<script>
 
-export default {
-	name: 'Accueil',
-	data () {
-		return {
-			pseudos : [],
-			themes : [],
-			pseudo: '',
-			idQuizz : '',
-			nomQuizz : '',
-			verifP : true,
-			inputPseudo: true
-		}
-	},
-	mounted(){
-		window.axios.get('themes').then(response => { 
-			this.themes = response.data.themes
-		})
-	},
-	sockets: {
-		savePseudo(data) {
-			this.pseudos = data
-		},
-		demarrer(){
-			this.$router.push({path: '/question'});
-		},
-		saveQuizz(data){
-			this.nomQuizz = data
-		},
-	},
-	methods: {
-		valPseudo(){
-			if(this.pseudos.indexOf(this.pseudo) == -1 && this.pseudo !== ''){
-				this.$socket.emit('nouveau_joueur', this.pseudo);
-				this.inputPseudo = false
-			}
-			else{
-				this.verifP = false
-				console.log("nan pas possible")
+	export default {
+		name: 'Accueil',
+		data () {
+			return {
+				pseudos : [],
+				themes : [],
+				pseudo: '',
+				idQuizz : '',
+				nomQuizz : '',
+				verifP : true,
+				inputPseudo: true
 			}
 		},
-		commencerPartie(){
-			this.$socket.emit('commencer')
+		mounted(){
+			window.axios.get('themes').then(response => { 
+				this.themes = response.data.themes
+			})
 		},
-		selectQuizz(id,nom){
-			this.idQuizz = id
-			this.$socket.emit('nomQuizz',nom)
+		sockets: {
+			savePseudo(data) {
+				this.pseudos = data
+			},
+			demarrer(){
+				this.$router.push({path: '/question'});
+			},
+			saveQuizz(data){
+				this.nomQuizz = data
+			},
+			disconnect(){
+				socket.emit('disconnect', this.pseudo)
+			}
+		},
+		methods: {
+			valPseudo(){
+				if(this.pseudos.indexOf(this.pseudo) == -1 && this.pseudo !== ''){
+					this.$socket.emit('nouveau_joueur', this.pseudo);
+					this.inputPseudo = false
+				}
+				else{
+					this.verifP = false
+					console.log("nan pas possible")
+				}
+			},
+			commencerPartie(){
+				this.$socket.emit('commencer')
+			},
+			selectQuizz(id,nom){
+				this.idQuizz = id
+				this.$socket.emit('nomQuizz',nom)
+			}
 		}
 	}
-}
-</script>
+	</script>
 
-<style scoped>
+	<style scoped>
 
-</style>
+	</style>
