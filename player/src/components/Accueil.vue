@@ -18,33 +18,49 @@
 							</div>
 						</form>
 					</div>
+					<div v-if="verifP === false">Pseudo déjà sélectionné</div>
 				</div>
-				<div class="card-action">
-					<p>Joueurs présents dans la partie</p>
-					<div class="chip" v-for="p in pseudos">
-						<img src="../assets/ic_account_circle_black_48dp_1x.png" alt="Player">
-						{{p}}
-					</div>
+				<div v-if='inputPseudo === false'>
+					<div class="card-action">
+						<p>Joueurs présents dans la partie</p>
+						<div class="chip" v-for="p in pseudos">
+							<img src="../assets/ic_account_circle_black_48dp_1x.png" alt="Player">
+							{{p}}
+						</div>
+						<div class="card-action">
+							<div class="row">
+								<center>
+									<h3>En attente d'autres joueurs !</h3>
+								</center>
+							</div>
+							<div class="row">
+								<div class="progress">
+									<div class="indeterminate"></div>
+								</div>
+							</div>
+						</div>
+						<div v-if="pseudo === pseudos[0]">
+							<h4>Tu es le maître du jeu ! <br></br> Choisis un thème et commence.</h4>
+					        <ul class="collection">
+							    <li class="collection-item" v-for="t in themes">
+							      <div class="title"><b>{{t.nom}}</b></div>
+							      <div class="btn" v-for="quizz in t.quizz" @click='selectQuizz(quizz.id,quizz.nom)'>{{quizz.nom}}</div>
+							    </li>
+						    </ul>
+						    <div>Quizz sélectionné : {{nomQuizz}}</div>
 
-					<h4>Thèmes</h4>
-			        <ul class="collapsible" data-collapsible="expendable">
-					    <li v-for="t in themes">
-					      <div class="collapsible-header" >{{t.nom}}</div>
-					      <div class="collapsible-body" v-for="quizz in t.quizz" @click='selectQuizz(quizz.id)'>{{quizz.nom}}</div>
-					    </li>
-				    </ul>
-				</div>
-		   
-				<div class="card-action">
-					<div class="row">
-						<center>
-							<button class="btn " @click="commencerPartie">Commencer la partie</button>
-							<h3>En attente d'autres joueurs !</h3>
-						</center>
-					</div>
-					<div class="row">
-						<div class="progress">
-							<div class="indeterminate"></div>
+						    <center v-if="nomQuizz !== ''"><button class="btn" @click="commencerPartie">Commencer la partie</button></center>
+						</div>
+						<div v-else>
+							<p> Trop tard, tu n'es pas le maître du jeu ! Tu dois attendre sa décision !</p>
+							<div>Liste des quizz</div>
+							<ul class="collection">
+							    <li class="collection-item" v-for="t in themes">
+							      <div class="title"><b>{{t.nom}}</b></div>
+							      <div class="btn" v-for="quizz in t.quizz">{{quizz.nom}}</div>
+							     </li>
+							</ul>
+							<div>Quizz sélectionné par le maître du jeu : {{nomQuizz}}</div>
 						</div>
 					</div>
 				</div>
@@ -53,16 +69,18 @@
 	</div>
 </template>
 
-<script>   
+<script>
 
 export default {
 	name: 'Accueil',
 	data () {
 		return {
-			pseudo: '',
 			pseudos : [],
 			themes : [],
-			socketMessage: '',
+			pseudo: '',
+			idQuizz : '',
+			nomQuizz : '',
+			verifP : true,
 			inputPseudo: true
 		}
 	},
@@ -77,19 +95,28 @@ export default {
 		},
 		demarrer(){
 			this.$router.push({path: '/question'});
-		}
-
+		},
+		saveQuizz(data){
+			this.nomQuizz = data
+		},
 	},
 	methods: {
 		valPseudo(){
-			this.$socket.emit('nouveau_joueur', this.pseudo);
-			this.inputPseudo = false
+			if(this.pseudos.indexOf(this.pseudo) == -1 && this.pseudo !== ''){
+				this.$socket.emit('nouveau_joueur', this.pseudo);
+				this.inputPseudo = false
+			}
+			else{
+				this.verifP = false
+				console.log("nan pas possible")
+			}
 		},
 		commencerPartie(){
 			this.$socket.emit('commencer')
 		},
-		selectQuizz(id){
-			console.log(id)
+		selectQuizz(id,nom){
+			this.idQuizz = id
+			this.$socket.emit('nomQuizz',nom)
 		}
 	}
 }

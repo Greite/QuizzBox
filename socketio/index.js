@@ -11,6 +11,8 @@ app.get('/', function (req, res) {
 
 io.on('connection', function (socket) {
 
+	io.emit('savePseudo',pseudos)
+
 	socket.on('nouveau_joueur',function(pseudo){
 		pseudos.push(pseudo)
 		io.emit('savePseudo',pseudos)
@@ -18,5 +20,9 @@ io.on('connection', function (socket) {
 
 	socket.on('commencer',function(){
 		io.emit('demarrer');
+	});
+
+	socket.on('nomQuizz',function(nom){
+		io.emit('saveQuizz',nom)
 	});
 });
