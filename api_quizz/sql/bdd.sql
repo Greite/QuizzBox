@@ -16,6 +16,17 @@ CREATE TABLE `question` (
   CONSTRAINT `question_ibfk_1` FOREIGN KEY (`id_quizz`) REFERENCES `quizz` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+INSERT INTO `question` (`id`, `texte`, `image`, `id_quizz`) VALUES
+(1,	'Quand s\'est déroulée la coupe du monde 1998 ?',	NULL,	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(2,	'Qui a marqué un doublé lors de la final 98 France-Brésil ?',	NULL,	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(3,	'Combien de coupe du monde la France a elle gagnée ?',	NULL,	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(4,	'Où s\'est déroulée la coupe du monde 2006 ?',	NULL,	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(5,	'Combien de coupe du monde l\'Allemagne a elle gagnée ?',	NULL,	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(6,	'Quelle équipe fut discalifiée contre toute attente pour le mondial 2018 ?',	NULL,	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(7,	'À quelle fréquence se déroule la coupe du monde ?',	NULL,	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(8,	'Quel joueur est le meilleur buteur toute compétition mondial confondue ?',	NULL,	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(9,	'Quelle forme a un ballon ?',	NULL,	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(10,	'Qui est le plus fort entre la France est la Lituanie ?',	NULL,	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002');
 
 DROP TABLE IF EXISTS `quizz`;
 CREATE TABLE `quizz` (
@@ -46,6 +57,47 @@ CREATE TABLE `reponse` (
   CONSTRAINT `reponse_ibfk_1` FOREIGN KEY (`id_question`) REFERENCES `question` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+INSERT INTO `reponse` (`id`, `texte`, `etat`, `id_question`) VALUES
+(1,	'2005',	0,	1),
+(2,	'3000',	0,	1),
+(3,	'1998',	1,	1),
+(5,	'5165166',	0,	1),
+(6,	'bartez',	0,	2),
+(7,	'zizou',	1,	2),
+(8,	'valbuena',	0,	2),
+(9,	'bob marley',	0,	2),
+(10,	'12',	0,	3),
+(11,	'1',	0,	3),
+(12,	'0',	0,	3),
+(13,	'85',	0,	3),
+(14,	'Allemagne',	1,	4),
+(15,	'bresil',	0,	4),
+(16,	'chypre',	0,	4),
+(17,	'usa',	0,	4),
+(18,	'4',	1,	5),
+(19,	'887',	0,	5),
+(20,	'475',	0,	5),
+(21,	'4',	0,	5),
+(22,	'belgique',	0,	6),
+(23,	'italie',	1,	6),
+(24,	'France',	0,	6),
+(25,	'Russie',	0,	6),
+(26,	'Tous les 4 ans',	1,	7),
+(27,	'Tous les 6 ans',	0,	7),
+(28,	'Toutes les 4 semaines',	0,	7),
+(29,	'tout les jours',	0,	7),
+(30,	'Just Fontaine',	1,	8),
+(31,	'Ronaldo',	0,	8),
+(32,	'Miroslav Klose ',	0,	8),
+(33,	'une carotte',	1,	8),
+(34,	'noir',	0,	9),
+(35,	'ronde',	1,	9),
+(36,	'carré',	0,	9),
+(37,	'trobonne',	0,	9),
+(38,	'La Colombie',	0,	10),
+(39,	'La Suisse',	0,	10),
+(40,	'Le Pakistan',	0,	10),
+(41,	'Marseille',	1,	10);
 
 DROP TABLE IF EXISTS `theme`;
 CREATE TABLE `theme` (
@@ -91,4 +143,4 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `login`, `password`, `mail`) VALUES
 ('32a4d78c-75c7-4bc1-bc81-2a55b5afde17',	'Michel',	'$2y$10$QgcFe0lt/crzktNQ0KUcjO3iyPYdNaYxt1LfwfFl04EZax4H.ASQW',	'michel@cestlebresil.samba');
 
--- 2018-03-07 17:36:23
+-- 2018-03-13 16:25:53
