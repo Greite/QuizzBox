@@ -40,19 +40,15 @@
 						</center>
 					</div>
 					<div class="row" v-if="!preloader">
-						<div>
 							<center>
-								<button @click="suivant">Suivant</button>
+								<h5>En attente du maitre du jeu !</h5>
 							</center>
-						</div>
-						<div>
-							<center>
-								<h3>En attente du maitre du jeu !</h3>
-							</center>
-						</div>
 							<div class="progress">
 								<div class="indeterminate"></div>
 							</div>
+					</div>
+					<div class="row" v-if="!preloader">
+						<a class="waves-effect waves-light btn-large col s4 offset-s4" @click="suivant">Suivant</a>
 					</div>
 				</div>
 			</div>
@@ -95,14 +91,14 @@ export default {
 			this.i++
 		},
 		timer(){
-			if (this.temps == 10) {
+			if (this.temps == 11) {
 				this.vert = false
 				this.orange = true
-			}else if(this.temps == 5){
+			}else if(this.temps == 6){
 				this.orange = false
 				this.rouge = true
 			}
-			if (this.temps!=0) {
+			if (this.temps!=1) {
 				this.temps--
 			}else{
 				clearInterval(this.inter)

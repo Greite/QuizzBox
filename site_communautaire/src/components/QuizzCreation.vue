@@ -1,6 +1,6 @@
 <template>
 	<div class="row">
-		<form class="col s6 offset-s3" @submit="creerQuizz">   
+		<form class="col s6 offset-s3" @submit="creerQuizz">
 			<div class="row">
 				<div class="input-field col s12">
 					<input id="nom" v-model="nom" type="text" class="validate">
