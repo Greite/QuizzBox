@@ -58,7 +58,7 @@
 								<ul class="collection">
 									<li class="collection-item" v-for="t in themes">
 										<center><div class="title"><b>{{t.nom}}</b></div></center>
-										<center><div class="btn" v-for="quizz in t.quizz" @click='selectQuizz(quizz.id,quizz.nom)'>{{quizz.nom}}</div></center>
+										<center><div class="btn" v-for="quizz in t.quizz">{{quizz.nom}}</div></center>
 									</li>
 								</ul>
 								<div><center>Quizz sélectionné par le maître du jeu : {{nomQuizz}}</center></div>
@@ -99,9 +99,6 @@
 			},
 			saveQuizz(data){
 				this.nomQuizz = data
-			},
-			disconnect(){
-				socket.emit('disconnect', this.pseudo)
 			}
 		},
 		methods: {
@@ -116,8 +113,8 @@
 				}
 			},
 			commencerPartie(){
-				this.$socket.emit('commencer')
-			},
+				this.$socket.emit('commencer',this.idQuizz);
+			}, 
 			selectQuizz(id,nom){
 				this.idQuizz = id
 				this.$socket.emit('nomQuizz',nom)
