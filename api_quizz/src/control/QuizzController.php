@@ -166,7 +166,7 @@ class QuizzController {
 
     public function getQuestionId(Request $req, Response $resp, $args){
         try {
-            $quest = Question::where('id','=',$args['id'])->with('reponses')->get();
+            $quest = Question::where('id_quizz','=',$args['id'])->with('reponses')->get();
         } catch (ModelNotFoundException $e) {
             $resp = $resp->withStatus(404);
             $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Ressource non disponible : /questions/'.$args['id']));

@@ -3,7 +3,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var pseudos = [];
 var quizz_nom = "";
-var all_client = [];
+var quizz_id = "";
 
 server.listen(3000);
 
@@ -19,7 +19,8 @@ io.on('connection', function (socket) {
 		console.log(pseudos)
 	});
 
-	socket.on('commencer',function(){
+	socket.on('commencer',function(id){
+		quizz_id = id;
 		io.emit('demarrer');
 	});
 
@@ -34,4 +35,7 @@ io.on('connection', function (socket) {
 		io.emit('savePseudo',pseudos)
 		console.log(pseudos)
 	});
+	socket.on('recupId',function(){
+		io.emit('saveId',quizz_id)
+	})
 });

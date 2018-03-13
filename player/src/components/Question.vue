@@ -3,17 +3,19 @@
 		<div class="col s12">
 			<div class="card grey lighten-4">
 				<div class="card-content black-text">
-					<span class="card-title">Question N°x</span>
-					<p>Bonjour je suis le corps de la question voici les 4 réponse donc une seule est vrai</p>
+					<span class="card-title">Question N°{{i+1}}</span>
+					<p>{{questions.quizz[i].texte}}</p>
 				</div>
 				<div class="card-action">
-					<div class="row">
-						<a class="waves-effect waves-light btn-large col s5" @click="reponse1">Réponse N°1</a>
-						<a class="waves-effect waves-light btn-large col s5 offset-s2" @click="reponse2">Réponse N°2</a>
-					</div>
-					<div class="row">
-						<a class="waves-effect waves-light btn-large col s5" @click="reponse3">Réponse N°3</a>
-						<a class="waves-effect waves-light btn-large col s5 offset-s2" @click="reponse4">Réponse N°4</a>
+					<div>
+						<div class="row">
+							<a class="waves-effect waves-light btn-large col s5" @click="reponse1">{{questions.quizz[i].reponses[0].texte}}</a>
+							<a class="waves-effect waves-light btn-large col s5 offset-s2" @click="reponse2">{{questions.quizz[i].reponses[1].texte}}</a>
+						</div>
+						<div class="row">
+							<a class="waves-effect waves-light btn-large col s5" @click="reponse3">{{questions.quizz[i].reponses[2].texte}}</a>
+							<a class="waves-effect waves-light btn-large col s5 offset-s2" @click="reponse4">{{questions.quizz[i].reponses[3].texte}}</a>
+						</div>
 					</div>
 					<div class="row" v-if="preloader">
 						<center>
@@ -38,14 +40,19 @@
 						</center>
 					</div>
 					<div class="row" v-if="!preloader">
-						<center>
-							<h3>En attente du maitre du jeu !</h3>
-						</center>
-					</div>
-					<div class="row" v-if="!preloader">
-						<div class="progress">
-							<div class="indeterminate"></div>
+						<div>
+							<center>
+								<button @click="suivant">Suivant</button>
+							</center>
 						</div>
+						<div>
+							<center>
+								<h3>En attente du maitre du jeu !</h3>
+							</center>
+						</div>
+							<div class="progress">
+								<div class="indeterminate"></div>
+							</div>
 					</div>
 				</div>
 			</div>
@@ -60,6 +67,9 @@ export default {
 	data () {
 		return {
 			temps: 20,
+			i : 0,
+			idQuizz : "",
+			questions : [],
 			inter: null,
 			preloader: true,
 			vert: true,
@@ -68,11 +78,22 @@ export default {
 		}
 	},
 	mounted(){
+		this.$socket.emit('recupId');
 		this.inter = setInterval(this.timer, 1000)
-
-		axios.get()
+	},
+	sockets: {
+		saveId(data){
+			this.idQuizz = data
+			window.axios.get('questions/'+data+'/reponses').then(response => { 
+				this.questions = response.data
+				console.log(this.questions.quizz[0].texte)
+			})
+		}
 	},
 	methods: {
+		suivant(){
+			this.i++
+		},
 		timer(){
 			if (this.temps == 10) {
 				this.vert = false
