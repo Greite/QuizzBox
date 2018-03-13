@@ -1,27 +1,29 @@
 <template>
 	<div class="row">
-		<ul class="collection with-header">
-        <li class="collection-header"><h3>Thèmes</h3></li>
-        <li class="collection-item" v-for="theme in themes">
-          <h4>{{theme.nom}}</h4>
-          <p>{{theme.description}}</p>
 
-      <div class="row" v-for="quizz in theme.quizz">
-        <div class="col s12 m3">
-          <div class="card blue-grey darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">{{quizz.nom}}</span>
-            </div>
-            <div class="card-action">
-              <a href="#">Télécharger</a>
-            </div>
-          </div>
-        </div>
-      </div>
-          
-        </li>
-      </ul>
-	</div>
+		<h3>Thèmes</h3>
+		<div class="row col s3">
+			<label >Thème</label>
+			<select id="selected" v-model="selected" class="browser-default">
+				<option v-for="theme in themes" v-bind:value="theme.id">{{theme.nom}}</option>
+			</select>
+		</div>
+		<div class="row col s12" v-for="theme in themes" v-if="theme.id == selected">
+		  <h4>{{theme.nom}}</h4>
+		  <p>{{theme.description}}</p>
+
+		  <div class="row col s3" v-for="quizz in theme.quizz">
+			  <div class="card blue-grey darken-1">
+				<div class="card-content white-text">
+					<span class="card-title">{{quizz.nom}}</span>
+				</div>
+				<div class="card-action">
+					<a href="#">Télécharger</a>
+				</div>
+			  </div>
+		  </div>
+		</div>
+</div>
 </template>
 
 <script>
@@ -32,7 +34,8 @@ export default {
 		return {
 			quizz : '',
 			themes: [],
-			theme : ''
+			theme : '',
+			selected:'',
 		}
 	},
 	mounted() {
