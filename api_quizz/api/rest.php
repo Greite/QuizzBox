@@ -50,6 +50,8 @@ $app->get('/quizz/{id}','\quizz\control\QuizzController:getQuizzId');
 
 $app->post('/quizz','\quizz\control\QuizzController:addQuizz');
 
+$app->post('/question','\quizz\control\QuizzController:addQuestion');
+
 $app->get('/questions/{id}/reponses','\quizz\control\QuizzController:getQuestionId');
 
 $app->run();

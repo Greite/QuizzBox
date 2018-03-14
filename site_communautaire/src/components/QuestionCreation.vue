@@ -52,6 +52,10 @@ export default {
 			reponse2: '',
 			reponse3: '',
 			reponse4: '',
+			etat1: '',
+			etat2: '',
+			etat3: '',
+			etat4: '',
 			quizzs: []
 		}
 	},
@@ -64,10 +68,10 @@ export default {
 		creerQuestion(){
 			window.axios.post('questions', {
 				intitule: this.intitule,
-				theme: this.theme,
+				id_quizz: this.quizz,
 			}).then(response => {
 				window.axios.post('reponses', {
-				reponses: this.reponses,
+				reponses: [this.reponse1, this.reponse2, this.reponse3, this.reponse4]
 				}).then(response => {
 					this.$router.push({path: '/accueil'});  
 				})

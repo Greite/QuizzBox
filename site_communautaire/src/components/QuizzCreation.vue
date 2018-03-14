@@ -42,7 +42,7 @@ export default {
 		creerQuizz() {   
 			window.axios.post('quizz', {
 				nom: this.nom,
-				theme: this.theme,
+				id_theme: this.theme,
 				id_createur: this.$store.state.member.id
 			}, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
 				this.$router.push({path: '/question-creation'})
