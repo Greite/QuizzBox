@@ -13,16 +13,6 @@
 					<option v-for="theme in themes" v-bind:value="theme.id">{{theme.nom}}</option>
 				</select>
 			</div>
-			<div class="row" v-for="n in nbQuestion">
-				<h4>Question n°{{n}}</h4>
-				<quizzQuestion></quizzQuestion>
-			</div>
-			<div class="row">
-				<center>
-					<a class="btn-floating btn-large waves-effect waves-light red" @click="ajoutQuestion"><i class="material-icons">exposure_plus_1</i></a>
-					<a class="btn-floating btn-large waves-effect waves-light red" @click="supprQuestion"><i class="material-icons">exposure_neg_1</i></a>
-				</center>
-			</div>
 			<div class="row">
 				<button class="btn-large waves-effect waves-light col s4 offset-s4" type="submit">Créer le quizz
 					<i class="material-icons right">send</i>
@@ -34,18 +24,13 @@
 
 <script>
 
-import QuizzQuestion from './QuizzQuestion.vue'
-
 export default {
 	name: 'QuizzCreation',
-	components: {QuizzQuestion},
 	data () {
 		return {
 			nom: '',
 			themes : [],
 			theme : '',
-			question : '',
-			nbQuestion: 1,
 		}
 	},
 	mounted () {
@@ -57,27 +42,11 @@ export default {
 		creerQuizz() {   
 			window.axios.post('quizz', {
 				nom: this.nom,
-				theme: this.theme
-			}).then(response => {
-				window.axios.post('questions', {
-					intitule: this.question.intitule,
-					theme: this.theme,
-				}).then(response => {
-					window.axios.post('reponses', {
-					reponses: this.reponses,
-					}).then(response => {
-						this.$router.push({path: '/accueil'});  
-					})
-				})
+				theme: this.theme,
+				id_createur: this.$store.state.member.id
+			}, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
+				this.$router.push({path: '/question-creation'})
 			})
-		},
-		ajoutQuestion(){
-			this.nbQuestion++
-		},
-		supprQuestion(){
-			if (this.nbQuestion!=1) {
-				this.nbQuestion--
-			}
 		}
 	}
 }
