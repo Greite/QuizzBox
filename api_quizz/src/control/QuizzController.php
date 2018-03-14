@@ -280,12 +280,11 @@ class QuizzController {
                 return $resp;
             }
             $parsedBody = $req->getParsedBody();
-            $id_question = Question::select('id')->where('texte', '=', $parsedBody('question'))->get();
             $i=1;
             foreach ($parsedBody['reponses'] as $value) {
                 $reponse = new Reponse;
                 $reponse->texte = filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
-                $reponse->id_question = $id_question;
+                $reponse->id_question = $parsedBody['id_question'];
                 if ($parsedBody['picked'] == $value) {
                     $reponse->etat = 1;
                 }
@@ -293,7 +292,7 @@ class QuizzController {
                     $reponse->etat = 0;
                 }
             $id_reponse = $reponse->save();
-            $tabjson['reponse'.$i] = array('id' => $id_reponse, 'texte' => $reponse->texte, 'etat' => $response->etat, 'id_question' => $reponse->id_question);
+            $tabjson['reponse'.$i] = array('id' => $id_reponse, 'texte' => $reponse->texte, 'etat' => $reponse->etat, 'id_question' => $reponse->id_question);
             $i++;
             }
             

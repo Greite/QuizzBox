@@ -72,6 +72,7 @@ export default {
 			reponse3: '',
 			reponse4: '',
 			picked: '',
+			id_question: '',
 			quizzs: []
 		}
 	},
@@ -86,16 +87,16 @@ export default {
 				intitule: this.intitule,
 				id_quizz: this.quizz,
 			}, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
-				
-			}),
-			window.axios.post('reponses', {
+				this.id_question = response.data.question.id
+			})
+			/*window.axios.post('reponses', {
 
 				reponses: [this.reponse1, this.reponse2, this.reponse3, this.reponse4],
 				picked: this.picked,
-				question: this.intitule,
+				id_question: this.id_question,
 				}, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
 					this.$router.push({path: '/accueil'});  
-			})
+			})*/
 		}
 	}
 }
