@@ -1,6 +1,6 @@
 <template>
 	<div class="row">
-		<form class="col s6 offset-s3" @submit="creerQuestion">
+		<form class="col s12" @submit="creerQuestion">
 			<div class="row">
 				<label>Quizz</label>
 				<select id="quizz" v-model="quizz" class="browser-default col s12">
@@ -34,7 +34,25 @@
 				</div>
 			</div>
 			<div class="row">
-				<button class="btn-large waves-effect waves-light col s4 offset-s4" type="submit">Créer la question
+				<p>
+					<input name="group1" type="radio" id="checkReponse1" />
+					<label for="checkReponse1">Réponse 1</label>
+				</p>
+				<p>
+					<input name="group1" type="radio" id="checkReponse2" />
+					<label for="checkReponse2">Réponse 2</label>
+				</p>
+				<p>
+					<input name="group1" type="radio" id="checkReponse3" />
+					<label for="checkReponse3">Réponse 3</label>
+				</p>
+				<p>
+					<input name="group1" type="radio" id="checkReponse4" />
+					<label for="checkReponse4">Réponse 4</label>
+				</p>
+			</div>
+			<div class="row">
+				<button class="btn-large waves-effect waves-light col s4 offset-s4" type="submit">Créer !
 					<i class="material-icons right">send</i>
 				</button>
 			</div>
@@ -67,7 +85,7 @@ export default {
 				theme: this.theme,
 			}).then(response => {
 				window.axios.post('reponses', {
-				reponses: this.reponses,
+					reponses: this.reponses,
 				}).then(response => {
 					this.$router.push({path: '/accueil'});  
 				})
