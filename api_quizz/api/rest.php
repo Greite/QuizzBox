@@ -52,6 +52,8 @@ $app->post('/quizz','\quizz\control\QuizzController:addQuizz');
 
 $app->post('/question','\quizz\control\QuizzController:addQuestion');
 
+$app->post('/reponses','\quizz\control\QuizzController:addReponses');
+
 $app->get('/questions/{id}/reponses','\quizz\control\QuizzController:getQuestionId');
 
 $app->run();

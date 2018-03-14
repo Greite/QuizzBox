@@ -242,13 +242,63 @@ class QuizzController {
             $question = new Question;
             $question->texte = filter_var($parsedBody['intitule'], FILTER_SANITIZE_SPECIAL_CHARS);
             $question->id_quizz = filter_var($parsedBody['id_quizz'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $question->save();
+            $id_question = $question->save();
+            
+            $resp = $resp->withStatus(201);
+            $resp = $resp->withJson(array('question' => array('id' => $id_question, 'texte' => $question->texte, 'id_quizz' => $question->id_quizz)));
+            return $resp;
+        }catch(ExpiredException $e) {
+            $resp = $resp->withStatus(401);
+            $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "La carte a expirée"));
+            return $resp;
+        }catch(SignatureInvalidException $e) {
+            $resp = $resp->withStatus(401);
+            $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Mauvaise signature"));
+            return $resp;
+        }catch(BeforeValidException $e) {
+            $resp = $resp->withStatus(401);
+            $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
+            return $resp;
+        }catch(\UnexpectedValueException $e) {
+            $resp = $resp->withStatus(401);
+            $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
+            return $resp;
+        }
+    }
+
+    public function addReponses(Request $req, Response $resp, $args){
+        try {
+            $secret = "quizzbox";
+            $h = $req->getHeader('Authorization')[0];
+            $tokenstring = sscanf($h, "Bearer %s")[0];
+            $token = JWT::decode($tokenstring, $secret, ['HS512']);
+            try{
+                User::findOrFail($token->id);
+            }catch(ModelNotFoundException $e){
+                $resp = $resp->withStatus(401);
+                $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Le token ne correspond pas"));
+                return $resp;
+            }
+            $parsedBody = $req->getParsedBody();
+            $id_question = Question::select('id')->where('texte', '=', $parsedBody('question'))->get();
+            $i=1;
             foreach ($parsedBody['reponses'] as $value) {
-                $question->reponse()->associate($parsedBody['reponses'][]);
+                $reponse = new Reponse;
+                $reponse->texte = filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
+                $reponse->id_question = $id_question;
+                if ($parsedBody['picked'] == $value) {
+                    $reponse->etat = 1;
+                }
+                else {
+                    $reponse->etat = 0;
+                }
+            $id_reponse = $reponse->save();
+            $tabjson['reponse'.$i] = array('id' => $id_reponse, 'texte' => $reponse->texte, 'etat' => $response->etat, 'id_question' => $reponse->id_question);
+            $i++;
             }
             
             $resp = $resp->withStatus(201);
-            $resp = $resp->withJson(array('quizz' => array('id' => $quizz->id, 'nom' => $quizz->nom, 'id_createur' => $quizz->id_createur, 'themes' => $quizz->themes)));
+            $resp = $resp->withJson(array('reponses' => $tabjson));
             return $resp;
         }catch(ExpiredException $e) {
             $resp = $resp->withStatus(401);

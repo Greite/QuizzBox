@@ -34,20 +34,21 @@
 				</div>
 			</div>
 			<div class="row">
+				<h6> Cochez la bonne réponse : </h6>
 				<p>
-					<input name="group1" type="radio" id="checkReponse1" />
+					<input name="group1" type="radio" id="checkReponse1" value="reponse1" v-model="picked"/>
 					<label for="checkReponse1">Réponse 1</label>
 				</p>
 				<p>
-					<input name="group1" type="radio" id="checkReponse2" />
+					<input name="group1" type="radio" id="checkReponse2" value="reponse2" v-model="picked"/>
 					<label for="checkReponse2">Réponse 2</label>
 				</p>
 				<p>
-					<input name="group1" type="radio" id="checkReponse3" />
+					<input name="group1" type="radio" id="checkReponse3" value="reponse3" v-model="picked"/>
 					<label for="checkReponse3">Réponse 3</label>
 				</p>
 				<p>
-					<input name="group1" type="radio" id="checkReponse4" />
+					<input name="group1" type="radio" id="checkReponse4" value="reponse4" v-model="picked"/>
 					<label for="checkReponse4">Réponse 4</label>
 				</p>
 			</div>
@@ -70,10 +71,7 @@ export default {
 			reponse2: '',
 			reponse3: '',
 			reponse4: '',
-			etat1: '',
-			etat2: '',
-			etat3: '',
-			etat4: '',
+			picked: '',
 			quizzs: []
 		}
 	},
@@ -84,17 +82,19 @@ export default {
 	},
 	methods: {
 		creerQuestion(){
-			window.axios.post('questions', {
+			window.axios.post('question', {
 				intitule: this.intitule,
 				id_quizz: this.quizz,
-			}).then(response => {
-				window.axios.post('reponses', {
+			}, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
+				
+			}),
+			window.axios.post('reponses', {
 
-				reponses: [this.reponse1, this.reponse2, this.reponse3, this.reponse4]
-
-				}).then(response => {
+				reponses: [this.reponse1, this.reponse2, this.reponse3, this.reponse4],
+				picked: this.picked,
+				question: this.intitule,
+				}, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
 					this.$router.push({path: '/accueil'});  
-				})
 			})
 		}
 	}
