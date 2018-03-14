@@ -203,6 +203,7 @@ class QuizzController {
             $quizz->id = $uuid4;
             $quizz->nom = filter_var($parsedBody['nom'], FILTER_SANITIZE_SPECIAL_CHARS);
             $quizz->id_createur = filter_var($parsedBody['id_createur'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $quizz->themes()->attach($parsedBody['id_theme']);
             $quizz->save();
             $resp = $resp->withStatus(201);
             $resp = $resp->withJson(array('quizz' => array('id' => $quizz->id, 'nom' => $quizz->nom, 'id_createur' => $quizz->id_createur)));
