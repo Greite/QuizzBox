@@ -3,18 +3,18 @@
 		<div class="col s12">
 			<div class="card grey lighten-4">
 				<div class="card-content black-text">
-					<span class="card-title">Question N°{{i+1}}</span>
+					<span class="card-title">Question N°{{i+1}}</span><span class="right">{{score}}</span>
 					<p>{{questions.quizz[i].texte}}</p>
 				</div>
 				<div class="card-action">
 					<div>
 						<div class="row">
-							<a class="waves-effect waves-light btn-large col s5" @click="reponse1">{{questions.quizz[i].reponses[0].texte}}</a>
-							<a class="waves-effect waves-light btn-large col s5 offset-s2" @click="reponse2">{{questions.quizz[i].reponses[1].texte}}</a>
+							<button class="waves-effect waves-light btn-large col s5" @click="reponse(questions.quizz[i].reponses[0].etat)">{{questions.quizz[i].reponses[0].texte}}</button>
+							<a class="waves-effect waves-light btn-large col s5 offset-s2" @click="reponse(questions.quizz[i].reponses[1].etat)">{{questions.quizz[i].reponses[1].texte}}</a>
 						</div>
 						<div class="row">
-							<a class="waves-effect waves-light btn-large col s5" @click="reponse3">{{questions.quizz[i].reponses[2].texte}}</a>
-							<a class="waves-effect waves-light btn-large col s5 offset-s2" @click="reponse4">{{questions.quizz[i].reponses[3].texte}}</a>
+							<a class="waves-effect waves-light btn-large col s5" @click="reponse(questions.quizz[i].reponses[2].etat)">{{questions.quizz[i].reponses[2].texte}}</a>
+							<a class="waves-effect waves-light btn-large col s5 offset-s2" @click="reponse(questions.quizz[i].reponses[3].etat)">{{questions.quizz[i].reponses[3].texte}}</a>
 						</div>
 					</div>
 					<div class="row" v-if="preloader">
@@ -41,13 +41,14 @@
 					</div>
 					<div class="row" v-if="!preloader">
 							<center>
+								<p>{{messageReponse}}</p>
 								<h5>En attente du maitre du jeu !</h5>
 							</center>
 							<div class="progress">
 								<div class="indeterminate"></div>
 							</div>
 					</div>
-					<div class="row" v-if="!preloader">
+					<div class="row" v-if="!preloader && pseudo === pseudos[0]">
 						<a class="waves-effect waves-light btn-large col s4 offset-s4" @click="suivant">Suivant</a>
 					</div>
 				</div>
@@ -65,7 +66,11 @@ export default {
 			temps: 20,
 			i : 0,
 			idQuizz : "",
+			messageReponse : "",
+			score : 0,
 			questions : [],
+			pseudo : "",
+			pseudos : [],
 			inter: null,
 			preloader: true,
 			vert: true,
@@ -74,21 +79,26 @@ export default {
 		}
 	},
 	mounted(){
-		this.$socket.emit('recupId');
+		this.$socket.emit('recupId')
 		this.inter = setInterval(this.timer, 1000)
 	},
 	sockets: {
 		saveId(data){
-			this.idQuizz = data
-			window.axios.get('questions/'+data+'/reponses').then(response => { 
+			this.idQuizz = data.quizz_id
+			this.pseudos = data.pseudos
+			this.pseudo = data.pseudo
+			console.log(this.pseudos + " " + this.pseudo)
+			window.axios.get('questions/'+data.quizz_id+'/reponses').then(response => { 
 				this.questions = response.data
-				console.log(this.questions.quizz[0].texte)
 			})
 		}
 	},
 	methods: {
 		suivant(){
 			this.i++
+			this.inter = setInterval(this.timer, 1000)
+			this.preloader = true
+			this.temps = 20
 		},
 		timer(){
 			if (this.temps == 11) {
@@ -105,36 +115,15 @@ export default {
 				this.preloader = false
 			}
 		},
-		reponse1(){
-			if(this.temps == 0){
-				console.log('Trop tard !')
-			}else {
-				console.log('Réponse 1')
-				this.temps = 0
-			}
-		},
-		reponse2(){
-			if(this.temps == 0){
-				console.log('Trop tard !')
-			}else {
-				console.log('Réponse 2')
-				this.temps = 0
-			}
-		},
-		reponse3(){
-			if(this.temps == 0){
-				console.log('Trop tard !')
-			}else {
-				console.log('Réponse 3')
-				this.temps = 0
-			}
-		},
-		reponse4(){
-			if(this.temps == 0){
-				console.log('Trop tard !')
-			}else {
-				console.log('Réponse 4')
-				this.temps = 0
+		reponse(state){
+			clearInterval(this.inter)
+			this.preloader = false
+			if(state){
+				this.messageReponse = "Bonne réponse !"
+				if(this.temps)
+				this.score = this.score + 5
+			}else{
+				this.messageReponse = "C'est faux"
 			}
 		}
 	}

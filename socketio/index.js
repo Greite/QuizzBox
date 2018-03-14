@@ -8,10 +8,12 @@ var quizz_id = "";
 server.listen(3000);
 
 io.on('connection', function (socket) {
+
 	var pseudo = "";
 	io.emit('saveQuizz',quizz_nom)
 	io.emit('savePseudo',pseudos)
 
+	//accueil
 	socket.on('nouveau_joueur',function(p){
 		pseudo = p
 		pseudos.push(pseudo)
@@ -35,7 +37,9 @@ io.on('connection', function (socket) {
 		io.emit('savePseudo',pseudos)
 		console.log(pseudos)
 	});
+
+	//question
 	socket.on('recupId',function(){
-		io.emit('saveId',quizz_id)
+		io.emit('saveId',{ quizz_id , pseudos, pseudo })
 	})
 });
