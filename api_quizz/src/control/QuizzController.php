@@ -242,10 +242,9 @@ class QuizzController {
             $question = new Question;
             $question->texte = filter_var($parsedBody['intitule'], FILTER_SANITIZE_SPECIAL_CHARS);
             $question->id_quizz = filter_var($parsedBody['id_quizz'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $id_question = $question->save();
-            
+            $question->save();
             $resp = $resp->withStatus(201);
-            $resp = $resp->withJson(array('question' => array('id' => $id_question, 'texte' => $question->texte, 'id_quizz' => $question->id_quizz)));
+            $resp = $resp->withJson(array('question' => array('id' => $question->id, 'texte' => $question->texte, 'id_quizz' => $question->id_quizz)));
             return $resp;
         }catch(ExpiredException $e) {
             $resp = $resp->withStatus(401);
@@ -281,18 +280,18 @@ class QuizzController {
             }
             $parsedBody = $req->getParsedBody();
             $i=1;
-            foreach ($parsedBody['reponses'] as $value) {
+            foreach ($parsedBody['reponses'] as $key => $value) {
                 $reponse = new Reponse;
                 $reponse->texte = filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
                 $reponse->id_question = $parsedBody['id_question'];
-                if ($parsedBody['picked'] == $value) {
+                if ($parsedBody['picked'] == $key) {
                     $reponse->etat = 1;
                 }
                 else {
                     $reponse->etat = 0;
                 }
-            $id_reponse = $reponse->save();
-            $tabjson['reponse'.$i] = array('id' => $id_reponse, 'texte' => $reponse->texte, 'etat' => $reponse->etat, 'id_question' => $reponse->id_question);
+            $reponse->save();
+            $tabjson['reponse'.$i] = array('id' => $reponse->id, 'texte' => $reponse->texte, 'etat' => $reponse->etat, 'id_question' => $reponse->id_question);
             $i++;
             }
             

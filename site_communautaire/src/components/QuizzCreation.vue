@@ -46,6 +46,7 @@ export default {
 				id_createur: this.$store.state.member.id
 			}, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
 				this.$router.push({path: '/question-creation'})
+				alert('Le quizz a été créé ! Vous pouvez maintenant ajouter des questions.')
 			})
 		}
 	}

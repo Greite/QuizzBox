@@ -36,19 +36,19 @@
 			<div class="row">
 				<h6> Cochez la bonne réponse : </h6>
 				<p>
-					<input name="group1" type="radio" id="checkReponse1" value="reponse1" v-model="picked"/>
+					<input type="radio" id="checkReponse1" value="0" v-model="picked"/>
 					<label for="checkReponse1">Réponse 1</label>
 				</p>
 				<p>
-					<input name="group1" type="radio" id="checkReponse2" value="reponse2" v-model="picked"/>
+					<input type="radio" id="checkReponse2" value="1" v-model="picked"/>
 					<label for="checkReponse2">Réponse 2</label>
 				</p>
 				<p>
-					<input name="group1" type="radio" id="checkReponse3" value="reponse3" v-model="picked"/>
+					<input type="radio" id="checkReponse3" value="2" v-model="picked"/>
 					<label for="checkReponse3">Réponse 3</label>
 				</p>
 				<p>
-					<input name="group1" type="radio" id="checkReponse4" value="reponse4" v-model="picked"/>
+					<input type="radio" id="checkReponse4" value="3" v-model="picked"/>
 					<label for="checkReponse4">Réponse 4</label>
 				</p>
 			</div>
@@ -72,7 +72,6 @@ export default {
 			reponse3: '',
 			reponse4: '',
 			picked: '',
-			id_question: '',
 			quizzs: []
 		}
 	},
@@ -87,16 +86,23 @@ export default {
 				intitule: this.intitule,
 				id_quizz: this.quizz,
 			}, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
-				this.id_question = response.data.question.id
-			})
-			/*window.axios.post('reponses', {
+				
+				window.axios.post('reponses', {
 
 				reponses: [this.reponse1, this.reponse2, this.reponse3, this.reponse4],
 				picked: this.picked,
-				id_question: this.id_question,
+				id_question: response.data.question.id,
 				}, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
-					this.$router.push({path: '/accueil'});  
-			})*/
+					this.$router.push({path: '/question-creation'});
+					this.intitule=''
+					this.reponse1=''
+					this.reponse2=''
+					this.reponse3=''
+					this.reponse4=''
+					this.picked=''
+					alert('La question a été créée ! Vous pouvez en ajouter une autre si vous voulez.')
+			})
+			})
 		}
 	}
 }
