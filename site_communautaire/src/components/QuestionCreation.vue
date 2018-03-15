@@ -1,5 +1,7 @@
 <template>
 	<div class="row">
+		<div class="card-panel red lighten-2" v-if="messageno != ''">{{messageno}}</div>
+		<div class="card-panel green lighten-2" v-if="messageok != ''">{{messageok}}</div>
 		<form class="col s12" @submit="creerQuestion">
 			<div class="row">
 				<label> Vos quizz</label>
@@ -73,7 +75,10 @@ export default {
 			reponse4: '',
 			picked: '',
 			quizz: '',
-			quizzs: []
+			quizzs: [],
+			messageno: '',
+			messageok: '',
+			color:'red'
 		}
 	},
 	mounted () {
@@ -83,23 +88,24 @@ export default {
 	},
 	methods: {
 		creerQuestion(){
+			this.messageok=''
 			let message = ''
 			if (this.quizz == '') {
-				message+="Veuillez choisir un quizz\n"
+				message+="Veuillez choisir un quizz. "
 			}
 			if (this.intitule == '') {
-				message+="Veuillez remplir l'intitulé\n"
+				message+="Veuillez remplir l'intitulé. "
 			}
 			if (this.reponse1 == '' || this.reponse2 == '' || this.reponse3 == '' || this.reponse4 == '') {
-				message+="Veuillez remplir toutes les réponses\n"
+				message+="Veuillez remplir toutes les réponses. "
 			}
 			if (this.picked == '') {
-				message+="Veuillez cocher la bonne réponse\n"
+				message+="Veuillez cocher la bonne réponse. "
 			}
-			if (message != '') {
-				alert(message)
-			}
-			else {
+			this.messageno = message
+
+			if (message == '') {
+
 				window.axios.post('question', {
 					intitule: this.intitule,
 					id_quizz: this.quizz,
@@ -118,7 +124,7 @@ export default {
 						this.reponse3=''
 						this.reponse4=''
 						this.picked=''
-						alert('La question a été créée ! Vous pouvez en ajouter une autre si vous voulez.')
+						this.messageok='La question a bien été créée !'
 				})
 				})
 			}
