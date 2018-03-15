@@ -72,6 +72,7 @@ export default {
 			reponse3: '',
 			reponse4: '',
 			picked: '',
+			quizz: '',
 			quizzs: []
 		}
 	},
@@ -82,27 +83,45 @@ export default {
 	},
 	methods: {
 		creerQuestion(){
-			window.axios.post('question', {
-				intitule: this.intitule,
-				id_quizz: this.quizz,
-			}, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
-				
-				window.axios.post('reponses', {
-
-				reponses: [this.reponse1, this.reponse2, this.reponse3, this.reponse4],
-				picked: this.picked,
-				id_question: response.data.question.id,
+			let message = ''
+			if (this.quizz == '') {
+				message+="Veuillez choisir un quizz\n"
+			}
+			if (this.intitule == '') {
+				message+="Veuillez remplir l'intitulé\n"
+			}
+			if (this.reponse1 == '' || this.reponse2 == '' || this.reponse3 == '' || this.reponse4 == '') {
+				message+="Veuillez remplir toutes les réponses\n"
+			}
+			if (this.picked == '') {
+				message+="Veuillez cocher la bonne réponse\n"
+			}
+			if (message != '') {
+				alert(message)
+			}
+			else {
+				window.axios.post('question', {
+					intitule: this.intitule,
+					id_quizz: this.quizz,
 				}, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
-					this.$router.push({path: '/question-creation'});
-					this.intitule=''
-					this.reponse1=''
-					this.reponse2=''
-					this.reponse3=''
-					this.reponse4=''
-					this.picked=''
-					alert('La question a été créée ! Vous pouvez en ajouter une autre si vous voulez.')
-			})
-			})
+					
+					window.axios.post('reponses', {
+
+					reponses: [this.reponse1, this.reponse2, this.reponse3, this.reponse4],
+					picked: this.picked,
+					id_question: response.data.question.id,
+					}, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
+						this.$router.push({path: '/question-creation'});
+						this.intitule=''
+						this.reponse1=''
+						this.reponse2=''
+						this.reponse3=''
+						this.reponse4=''
+						this.picked=''
+						alert('La question a été créée ! Vous pouvez en ajouter une autre si vous voulez.')
+				})
+				})
+			}
 		}
 	}
 }
