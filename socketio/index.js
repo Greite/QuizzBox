@@ -2,6 +2,7 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var pseudos = [];
+var reponses = 0;
 var quizz_nom = "";
 var quizz_id = "";
 
@@ -41,5 +42,15 @@ io.on('connection', function (socket) {
 	//question
 	socket.on('recupId',function(){
 		io.emit('saveId',{ quizz_id , pseudos, pseudo })
-	})
+	});
+
+	socket.on('suivant',function(){
+		reponses = 0
+		io.emit('questionSuivant')
+	});
+
+	socket.on('nombreReponse',function(){
+		reponses = reponses + 1;
+		io.emit('nbReponses',reponses)
+	});
 });
