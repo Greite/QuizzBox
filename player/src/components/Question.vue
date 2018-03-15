@@ -51,14 +51,15 @@
  					</div>
  					<div class="row" v-if="!preloader">
  						<center>
- 							<h5>En attente du maitre du jeu !</h5>
+ 							<h5 v-if="pseudos[0] === pseudo">{{reponses}} joueurs sur {{pseudos.length}} ont répondu</h5>
+ 							<h5 v-else >En attente du maitre du jeu !</h5>
  						</center>
  						<div class="progress">
  							<div class="indeterminate"></div>
  						</div>
  					</div>
- 					<div class="row" v-if="!preloader && pseudo === pseudos[0]">
- 						<a class="waves-effect waves-light btn-large col s4 offset-s4" @click="suivant">Suivant</a>
+ 					<div class="row" v-if="!preloader && pseudos[0] === pseudo && pseudo.length === reponses">
+ 						<a class="waves-effect waves-light btn-large col s4 offset-s4" @click="socketSuivant">Suivant</a>
  					</div>
  				</div>
  			</div>
@@ -77,6 +78,7 @@
  			idQuizz : "",
  			messageReponse : "",
  			score : 0,
+ 			reponses : 0,
  			questions : [],
  			pseudo : "",
  			pseudos : [],
@@ -90,20 +92,17 @@
  	mounted(){
  		this.$socket.emit('recupId')
  		this.inter = setInterval(this.timer, 1000)
+ 		this.pseudo = window.bus.pseudo
  	},
  	sockets: {
  		saveId(data){
  			this.idQuizz = data.quizz_id
  			this.pseudos = data.pseudos
- 			this.pseudo = data.pseudo
- 			console.log(this.pseudos + " " + this.pseudo)
  			window.axios.get('questions/'+data.quizz_id+'/reponses').then(response => { 
  				this.questions = response.data
  			})
- 		}
- 	},
- 	methods: {
- 		suivant(){
+ 		},
+ 		questionSuivant(){
  			this.i++
  			this.inter = setInterval(this.timer, 1000)
  			this.preloader = true
@@ -111,6 +110,15 @@
  			this.vert = true
  			this.orange = false
  			this.red = false
+ 		},
+ 		nbReponses(data){
+ 			this.reponses = data
+ 			console.log(this.reponses)
+ 		},
+ 	},
+ 	methods: {
+ 		socketSuivant(){
+ 			this.$socket.emit('suivant')
  		},
  		timer(){
  			if (this.temps == 11) {
@@ -124,10 +132,12 @@
  				this.temps--
  			}else{
  				clearInterval(this.inter)
+ 				this.$socket.emit('nombreReponse')
  				this.preloader = false
  			}
  		},
  		reponse(state){
+ 			this.$socket.emit('nombreReponse')
  			clearInterval(this.inter)
  			this.preloader = false
  			if(state){

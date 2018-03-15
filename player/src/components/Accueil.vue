@@ -22,7 +22,7 @@
 				</div>
 				<div v-if='inputPseudo === false'>
 					<div class="card-action">
-						<p>Joueurs présents dans la partie</p>
+						<p>{{pseudos.length}} joueurs présents dans la partie : </p>
 						<div class="chip" v-for="p in pseudos">
 							<img src="../assets/ic_account_circle_black_48dp_1x.png" alt="Player">
 							{{p}}
@@ -99,11 +99,12 @@
 			},
 			saveQuizz(data){
 				this.nomQuizz = data
-			}
+			},
 		},
 		methods: {
 			valPseudo(){
 				if(this.pseudos.indexOf(this.pseudo) == -1 && this.pseudo !== ''){
+					window.bus.pseudo = this.pseudo 
 					this.$socket.emit('nouveau_joueur', this.pseudo);
 					this.inputPseudo = false
 				}
