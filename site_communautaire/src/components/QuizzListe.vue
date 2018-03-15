@@ -1,9 +1,8 @@
 <template>
 	<div class="row">
 
-		<h3>Thèmes</h3>
 		<div class="row col s3">
-			<label >Thème</label>
+			<label >Rechercher un thème</label>
 			<select id="selected" v-model="selected" class="browser-default">
 				<option v-for="theme in themes" v-bind:value="theme.id">{{theme.nom}}</option>
 			</select>
@@ -16,6 +15,7 @@
 			  <div class="card blue-grey darken-1">
 				<div class="card-content white-text">
 					<span class="card-title">{{quizz.nom}}</span>
+					<span class="card-title" v-if="user.id == quizz.id_createur" v-for="user in users">Auteur : {{user.login}}</span>
 				</div>
 				<div class="card-action">
 					<a href="#">Télécharger</a>
@@ -36,11 +36,16 @@ export default {
 			themes: [],
 			theme : '',
 			selected:'',
+			users: [],
+			user: ''
 		}
 	},
 	mounted() {
 		window.axios.get('themes').then(response => { 
 			this.themes = response.data.themes
+		})
+		window.axios.get('users').then(response => { 
+			this.users = response.data.users
 		})
 	},
 	methods: {

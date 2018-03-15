@@ -42,6 +42,8 @@ $app->post('/users/signin[/]','\quizz\control\QuizzController:login');
 
 $app->get('/users/{id}[/]','\quizz\control\QuizzController:user');
 
+$app->get('/users[/]','\quizz\control\QuizzController:getUsers');
+
 $app->get('/themes[/]','\quizz\control\QuizzController:getThemesWithQuizz');
 
 $app->get('/quizz','\quizz\control\QuizzController:getQuizz');

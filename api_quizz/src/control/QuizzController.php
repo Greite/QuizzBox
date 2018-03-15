@@ -79,6 +79,24 @@ class QuizzController {
         }
     }
 
+    public function getUsers(Request $req, Response $resp, $args){
+        try {
+            $users = User::all();
+        } catch (ModelNotFoundException $e) {
+            $resp = $resp->withStatus(404);
+            $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Ressource non disponible : /users/'));
+            return $resp;
+        }
+        $tabusers=[
+            "type"=>"collection",
+            "meta"=>[$date=date('d/m/y')],
+            "users"=>$users,
+        ];
+        $resp = $resp->withStatus(200);
+        $resp = $resp->withJson($tabusers);
+        return $resp;
+    }
+
     public function login(Request $req, Response $resp, $args){
         $parsedBody = $req->getParsedBody();
         if (!is_null($parsedBody['login']) && !is_null($parsedBody['password'])) {
