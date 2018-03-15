@@ -2,9 +2,9 @@
 	<div class="row">
 		<form class="col s12" @submit="creerQuestion">
 			<div class="row">
-				<label>Quizz</label>
+				<label> Vos quizz</label>
 				<select id="quizz" v-model="quizz" class="browser-default col s12">
-					<option v-for="quizz in quizzs" v-bind:value="quizz.id">{{quizz.nom}}</option>
+					<option v-if="quizz.id_createur == $store.state.member.id" v-for="quizz in quizzs" v-bind:value="quizz.id">{{quizz.nom}}</option>
 				</select>
 			</div>
 			<div class="row">
