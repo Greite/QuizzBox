@@ -1,7 +1,6 @@
 <template>
 	<div class="row">
-		<div class="card-panel red lighten-2" v-if="messageno != ''">{{messageno}}</div>
-		<div class="card-panel green lighten-2" v-if="messageok != ''">{{messageok}}</div>
+		<div v-bind:class="classalert" v-if="message != ''">{{message}}</div>
 		<form class="col s12" @submit="creerQuizz">
 			<div class="row">
 				<div class="input-field col s12">
@@ -33,8 +32,8 @@ export default {
 			nom: '',
 			themes : [],
 			theme : '',
-			messageno: '',
-			messageok: ''
+			message: '',
+			classalert:''
 		}
 	},
 	mounted () {
@@ -44,7 +43,6 @@ export default {
 	},
 	methods: {
 		creerQuizz() {  
-			this.messageok=''
 			let message = ''
 			if (this.theme == '') {
 				message+="Veuillez choisir un thème. "
@@ -52,9 +50,11 @@ export default {
 			if (this.nom == '') {
 				message+="Veuillez remplir le nom. "
 			}
-			this.messageno = message
-
-			if (message == '') {
+			if (message != '') {
+				this.message = message
+				this.classalert="card-panel red lighten-2"
+			}
+			else {
 				window.axios.post('quizz', {
 					nom: this.nom,
 					id_theme: this.theme,
@@ -62,7 +62,8 @@ export default {
 				}, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
 					this.$router.push({path: '/quizz-creation'})
 					this.nom=''
-					this.messageok='Le quizz a bien été créé'
+					this.message='Le quizz a bien été créé'
+					this.classalert="card-panel green lighten-2"
 				})
 			}
 		}

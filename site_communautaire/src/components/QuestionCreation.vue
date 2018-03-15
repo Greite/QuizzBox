@@ -1,9 +1,8 @@
 <template>
 	<div class="row">
-		<div class="card-panel red lighten-2" v-if="messageno != ''">{{messageno}}</div>
-		<div class="card-panel green lighten-2" v-if="messageok != ''">{{messageok}}</div>
+		<div v-bind:class="classalert" v-if="message != ''">{{message}}</div>
 		<form class="col s12" @submit="creerQuestion">
-			<div class="row">
+			<div cla0ss="row">
 				<label> Vos quizz</label>
 				<select id="quizz" v-model="quizz" class="browser-default col s12">
 					<option v-if="quizz.id_createur == $store.state.member.id" v-for="quizz in quizzs" v-bind:value="quizz.id">{{quizz.nom}}</option>
@@ -76,9 +75,8 @@ export default {
 			picked: '',
 			quizz: '',
 			quizzs: [],
-			messageno: '',
-			messageok: '',
-			color:'red'
+			message: '',
+			classalert:''
 		}
 	},
 	mounted () {
@@ -88,7 +86,6 @@ export default {
 	},
 	methods: {
 		creerQuestion(){
-			this.messageok=''
 			let message = ''
 			if (this.quizz == '') {
 				message+="Veuillez choisir un quizz. "
@@ -102,9 +99,12 @@ export default {
 			if (this.picked == '') {
 				message+="Veuillez cocher la bonne réponse. "
 			}
-			this.messageno = message
 
-			if (message == '') {
+			if (message != '') {
+				this.message = message
+				this.classalert="card-panel red lighten-2"
+			}
+			else {
 
 				window.axios.post('question', {
 					intitule: this.intitule,
@@ -124,7 +124,8 @@ export default {
 						this.reponse3=''
 						this.reponse4=''
 						this.picked=''
-						this.messageok='La question a bien été créée !'
+						this.message='La question a bien été créée !'
+						this.classalert="card-panel green lighten-2"
 				})
 				})
 			}
