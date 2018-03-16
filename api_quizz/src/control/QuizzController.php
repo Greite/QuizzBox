@@ -203,7 +203,7 @@ class QuizzController {
 
     public function getScoresId(Request $req, Response $resp, $args){
         try {
-            $score = Score::where('id_quizz','=',$args['id'])->orderBy('score', 'desc')->take(10)->get();
+            $score = Score::where('id_quizz','=',$args['id'])->orderBy('score','desc')->take(10)->get();
         } catch (ModelNotFoundException $e) {
             $resp = $resp->withStatus(404);
             $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Ressource non disponible : /score/'.$args['id']));
@@ -212,7 +212,7 @@ class QuizzController {
         $tabscore=[
             "type"=>"ressource",
             "meta"=>[$date=date('d/m/y')],
-            "quizz"=>$quest,
+            "score"=>$score,
         ];
         $resp = $resp->withStatus(200);
         $resp = $resp->withJson($tabscore);
@@ -224,13 +224,13 @@ class QuizzController {
 
         $score = new Score;
         $score->pseudo = filter_var($parsedBody['pseudo'], FILTER_SANITIZE_SPECIAL_CHARS);
-        $score->score = $parsedBody['score']
-        $score->id_quizz = $parsedBody['id_quizz']
-        $user->save();
+        $score->score = $parsedBody['score'];
+        $score->id_quizz = $parsedBody['id_quizz'];
+        $score->save();
         $resp = $resp->withStatus(201);
-        $resp = $resp->withHeader('Location', "/scores");
+        $resp = $resp->withHeader('Location', "/scores/".$score->id_quizz);
         $resp = $resp->withHeader('Access-Control-Allow-Origin', $req->getHeader('Origin')[0]);
-        $resp = $resp->withJson(array('user' => array('id' => $score->id, 'login' => $score->pseudo, 'mail' => $score->score)));
+        $resp = $resp->withJson(array('score' => array('id' => $score->id, 'login' => $score->pseudo, 'mail' => $score->score)));
         return $resp;
     }
 

@@ -58,7 +58,7 @@ $app->post('/reponses[/]','\quizz\control\QuizzController:addReponses');
 
 $app->get('/questions/{id}/reponses[/]','\quizz\control\QuizzController:getQuestionId');
 
-$app->get('/scores/{id}[/]','\quizz\control\QuizzController:getQuizzId');
+$app->get('/scores/{id}[/]','\quizz\control\QuizzController:getScoresId');
 
 $app->post('/scores[/]','\quizz\control\QuizzController:addScore');
 

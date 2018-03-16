@@ -5,52 +5,64 @@ var pseudos = [];
 var reponses = 0;
 var quizz_nom = "";
 var quizz_id = "";
+var partie_on = false;
 
 server.listen(3000);
 
 io.on('connection', function (socket) {
-
-	var pseudo = "";
-	io.emit('saveQuizz',quizz_nom)
-	io.emit('savePseudo',pseudos)
-
-	//accueil
-	socket.on('nouveau_joueur',function(p){
-		pseudo = p
-		pseudos.push(pseudo)
+	if (partie_on) {
+		io.emit('partieOn')
+	}else {
+		var pseudo = "";
+		io.emit('saveQuizz',quizz_nom)
 		io.emit('savePseudo',pseudos)
-		console.log(pseudos)
-	});
 
-	socket.on('commencer',function(id){
-		quizz_id = id;
-		io.emit('demarrer');
-	});
+		//accueil
+		socket.on('nouveau_joueur',function(p){
+			pseudo = p
+			pseudos.push(pseudo)
+			io.emit('savePseudo',pseudos)
+			console.log(pseudos)
+		});
 
-	socket.on('nomQuizz',function(nom){
-		quizz_nom = nom
-		io.emit('saveQuizz',nom)
-	});
+		socket.on('commencer',function(id){
+			quizz_id = id;
+			io.emit('demarrer');
+			partie_on=true;
+		});
 
-	socket.on('disconnect', function(reason){
-		var i = pseudos.indexOf(pseudo);
-		pseudos.splice(i, 1);
-		io.emit('savePseudo',pseudos)
-		console.log(pseudos)
-	});
+		socket.on('nomQuizz',function(nom){
+			quizz_nom = nom
+			io.emit('saveQuizz',nom)
+		});
 
-	//question
-	socket.on('recupId',function(){
-		io.emit('saveId',{ quizz_id , pseudos, pseudo })
-	});
+		socket.on('disconnect', function(reason){
+			var i = pseudos.indexOf(pseudo);
+			pseudos.splice(i, 1);
+			io.emit('savePseudo',pseudos)
+			console.log(pseudos)
+			if (pseudos.length == 0) {
+				console.log('Reseting Server ! All clients left !');
+				reponses = 0;
+				quizz_nom = "";
+				quizz_id = "";
+				partie_on = false;
+			}
+		});
 
-	socket.on('suivant',function(){
-		reponses = 0
-		io.emit('questionSuivant')
-	});
+		//question
+		socket.on('recupId',function(){
+			io.emit('saveId',{ quizz_id , pseudos, pseudo })
+		});
 
-	socket.on('nombreReponse',function(){
-		reponses = reponses + 1;
-		io.emit('nbReponses',reponses)
-	});
+		socket.on('suivant',function(){
+			reponses = 0
+			io.emit('questionSuivant')
+		});
+
+		socket.on('nombreReponse',function(){
+			reponses = reponses + 1;
+			io.emit('nbReponses',reponses)
+		});
+	}
 });

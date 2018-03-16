@@ -68,7 +68,7 @@
  	</div>
  </template>
 
- <script>   
+ <script>
 
  export default {
  	name: 'Question',
@@ -91,16 +91,19 @@
  		}
  	},
  	mounted(){
- 		this.$socket.emit('recupId')
- 		this.inter = setInterval(this.timer, 1000)
- 		this.pseudo = window.bus.pseudo
+    this.$socket.emit('recupId')
+   	this.inter = setInterval(this.timer, 1000)
+    this.pseudo = window.bus.pseudo
  	},
  	sockets: {
  		saveId(data){
+      if (data.pseudo === "") {
+        this.$router.push({path: '/attente'})
+      }
  			this.idQuizz = data.quizz_id
  			window.bus.id = this.idQuizz
  			this.pseudos = data.pseudos
- 			window.axios.get('questions/'+data.quizz_id+'/reponses').then(response => { 
+ 			window.axios.get('questions/'+data.quizz_id+'/reponses').then(response => {
  				this.questions = response.data
  			})
  		},
@@ -210,7 +213,7 @@
  						break;
  						default:
  						this.score = this.score + 20
- 					} 
+ 					}
  				}
  			}else{
  				this.messageReponse = "C'est faux"

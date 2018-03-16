@@ -4,6 +4,7 @@ import Question from '@/components/Question'
 import Accueil from '@/components/Accueil'
 import IListenToSockets from '@/components/IListenToSockets'
 import AfficherScores from '@/components/AfficherScores'
+import Attente from '@/components/Attente'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
 		path: '/scores',
 		name: 'AfficherScores',
 		component: AfficherScores
+	},
+	{
+		path: '/attente',
+		name: 'Attente',
+		component: Attente
 	}
 	]
 })
