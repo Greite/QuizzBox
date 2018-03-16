@@ -95,7 +95,9 @@
 				this.pseudos = data
 			},
 			demarrer(){
-				this.$router.push({path: '/question'});
+				if(!this.inputPseudo) {
+					this.$router.push({path: '/question'});
+				}
 			},
 			saveQuizz(data){
 				this.nomQuizz = data

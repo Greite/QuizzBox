@@ -58,7 +58,7 @@
  							<div class="indeterminate"></div>
  						</div>
  					</div>
- 					<div class="row" v-if="!preloader && pseudos[0] === pseudo && pseudo.length === reponses">
+ 					<div class="row" v-if="!preloader && pseudos[0] === pseudo && pseudos.length === reponses">
  						<a class="waves-effect waves-light btn-large col s4 offset-s4" @click="socketSuivant">Suivant</a>
  					</div>
  				</div>
