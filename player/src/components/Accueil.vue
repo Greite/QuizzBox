@@ -96,7 +96,10 @@
 			},
 			demarrer(){
 				if(!this.inputPseudo) {
-					this.$router.push({path: '/question'});
+					this.$router.push({path: '/question'})
+				}
+				else {
+					this.$router.push({path: '/attente'})
 				}
 			},
 			saveQuizz(data){
