@@ -67,7 +67,7 @@ INSERT INTO `reponse` (`id`, `texte`, `etat`, `id_question`) VALUES
 (8,	'valbuena',	0,	2),
 (9,	'bob marley',	0,	2),
 (10,	'12',	0,	3),
-(11,	'1',	0,	3),
+(11,	'1',	1,	3),
 (12,	'0',	0,	3),
 (13,	'85',	0,	3),
 (14,	'Allemagne',	1,	4),
@@ -77,7 +77,7 @@ INSERT INTO `reponse` (`id`, `texte`, `etat`, `id_question`) VALUES
 (18,	'4',	1,	5),
 (19,	'887',	0,	5),
 (20,	'475',	0,	5),
-(21,	'4',	0,	5),
+(21,	'4',	1,	5),
 (22,	'belgique',	0,	6),
 (23,	'italie',	1,	6),
 (24,	'France',	0,	6),
@@ -89,7 +89,7 @@ INSERT INTO `reponse` (`id`, `texte`, `etat`, `id_question`) VALUES
 (30,	'Just Fontaine',	1,	8),
 (31,	'Ronaldo',	0,	8),
 (32,	'Miroslav Klose ',	0,	8),
-(33,	'une carotte',	1,	8),
+(33,	'une carotte',	0,	8),
 (34,	'noir',	0,	9),
 (35,	'ronde',	1,	9),
 (36,	'carré',	0,	9),
@@ -141,6 +141,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `user` (`id`, `login`, `password`, `mail`) VALUES
-('32a4d78c-75c7-4bc1-bc81-2a55b5afde17',	'Michel',	'$2y$10$QgcFe0lt/crzktNQ0KUcjO3iyPYdNaYxt1LfwfFl04EZax4H.ASQW',	'michel@cestlebresil.samba');
+('32a4d78c-75c7-4bc1-bc81-2a55b5afde17',	'Michel',	'$2y$10$QgcFe0lt/crzktNQ0KUcjO3iyPYdNaYxt1LfwfFl04EZax4H.ASQW',	'michel@cestlebresil.samba'),
+('faecf33f-a3b1-4143-bf71-a3dd6761c15c',	'greite',	'$2y$10$RzG3jW2We0dS80DQa9TmJu39QJvO1Viibn5rsn2Rd1R8YuIp10ySi',	'greite@greite.fr');
 
--- 2018-03-13 16:25:53
+-- 2018-03-16 13:13:25
