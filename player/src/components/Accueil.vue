@@ -86,7 +86,7 @@
 			}
 		},
 		mounted(){
-			window.axios.get('themes').then(response => { 
+			window.axios.get('themes').then(response => {
 				this.themes = response.data.themes
 			})
 		},
@@ -100,11 +100,14 @@
 			saveQuizz(data){
 				this.nomQuizz = data
 			},
+			partieOn(){
+				this.$router.push({path: '/attente'})
+			}
 		},
 		methods: {
 			valPseudo(){
 				if(this.pseudos.indexOf(this.pseudo) == -1 && this.pseudo !== ''){
-					window.bus.pseudo = this.pseudo 
+					window.bus.pseudo = this.pseudo
 					this.$socket.emit('nouveau_joueur', this.pseudo);
 					this.inputPseudo = false
 				}
@@ -115,7 +118,7 @@
 			},
 			commencerPartie(){
 				this.$socket.emit('commencer',this.idQuizz);
-			}, 
+			},
 			selectQuizz(id,nom){
 				this.idQuizz = id
 				this.$socket.emit('nomQuizz',nom)

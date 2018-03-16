@@ -58,7 +58,7 @@
  							<div class="indeterminate"></div>
  						</div>
  					</div>
- 					<div class="row" v-if="!preloader && pseudos[0] === pseudo && pseudo.length === reponses">
+ 					<div class="row" v-if="!preloader && pseudos[0] === pseudo && pseudos.length === reponses">
  						<a class="waves-effect waves-light btn-large col s4 offset-s4" @click="socketSuivant">Suivant</a>
  					</div>
  				</div>
@@ -67,7 +67,7 @@
  	</div>
  </template>
 
- <script>   
+ <script>
 
  export default {
  	name: 'Question',
@@ -98,7 +98,7 @@
  		saveId(data){
  			this.idQuizz = data.quizz_id
  			this.pseudos = data.pseudos
- 			window.axios.get('questions/'+data.quizz_id+'/reponses').then(response => { 
+ 			window.axios.get('questions/'+data.quizz_id+'/reponses').then(response => {
  				this.questions = response.data
  			})
  		},
@@ -199,7 +199,7 @@
  						break;
  						default:
  						this.score = this.score + 20
- 					} 
+ 					}
  				}
  			}else{
  				this.messageReponse = "C'est faux"
