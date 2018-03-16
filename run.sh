@@ -7,5 +7,6 @@ gnome-terminal -e "npm run dev"
 sleep 5
 cd ../site_communautaire
 gnome-terminal -e "npm run dev"
+sleep 5
 cd ../socketio
 gnome-terminal -e "node index.js"
