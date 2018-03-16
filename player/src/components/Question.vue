@@ -59,7 +59,8 @@
  						</div>
  					</div>
  					<div class="row" v-if="!preloader && pseudos[0] === pseudo && pseudos.length === reponses">
- 						<a class="waves-effect waves-light btn-large col s4 offset-s4" @click="socketSuivant">Suivant</a>
+ 						<a v-if="i === 9" class="waves-effect waves-light btn-large col s4 offset-s4" @click="enregistrerScore">Fin de la partie</a>
+ 						<a v-else class="waves-effect waves-light btn-large col s4 offset-s4" @click="socketSuivant">Suivant</a>
  					</div>
  				</div>
  			</div>
@@ -97,6 +98,7 @@
  	sockets: {
  		saveId(data){
  			this.idQuizz = data.quizz_id
+ 			window.bus.id = this.idQuizz
  			this.pseudos = data.pseudos
  			window.axios.get('questions/'+data.quizz_id+'/reponses').then(response => { 
  				this.questions = response.data
@@ -117,6 +119,15 @@
  		},
  	},
  	methods: {
+ 		enregistrerScore(){
+ 			window.axios.post('scores',{
+ 				score : this.score,
+ 				id_quizz : this.idQuizz,
+ 				pseudo : this.pseudo
+ 			}).then(response => { 
+ 				this.$router.push({path: '/scores'});
+ 			})
+ 		},
  		socketSuivant(){
  			this.$socket.emit('suivant')
  		},

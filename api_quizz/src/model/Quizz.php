@@ -13,14 +13,14 @@ class Quizz extends \Illuminate\Database\Eloquent\Model
     public $keyType = "string";
 
   public function themes() {
-       return $this->belongsToMany('quizz\model\Theme', 'theme2quizz', 'id_quizz', 'id_theme');
+    return $this->belongsToMany('quizz\model\Theme', 'theme2quizz', 'id_quizz', 'id_theme');
 	}
 
   public function questions() {
-       return $this->hasMany('quizz\model\Question', 'id_quizz');
+    return $this->hasMany('quizz\model\Question', 'id_quizz');
   }
 
 	public function createur() {
-       return $this->belongsTo('quizz\model\User', 'id_createur');
+    return $this->belongsTo('quizz\model\User', 'id_createur');
 	}
 }

@@ -46,16 +46,20 @@ $app->get('/users[/]','\quizz\control\QuizzController:getUsers');
 
 $app->get('/themes[/]','\quizz\control\QuizzController:getThemesWithQuizz');
 
-$app->get('/quizz','\quizz\control\QuizzController:getQuizz');
+$app->get('/quizz[/]','\quizz\control\QuizzController:getQuizz');
 
-$app->get('/quizz/{id}','\quizz\control\QuizzController:getQuizzId');
+$app->get('/quizz/{id}[/]','\quizz\control\QuizzController:getQuizzId');
 
-$app->post('/quizz','\quizz\control\QuizzController:addQuizz');
+$app->post('/quizz[/]','\quizz\control\QuizzController:addQuizz');
 
-$app->post('/question','\quizz\control\QuizzController:addQuestion');
+$app->post('/question[/]','\quizz\control\QuizzController:addQuestion');
 
-$app->post('/reponses','\quizz\control\QuizzController:addReponses');
+$app->post('/reponses[/]','\quizz\control\QuizzController:addReponses');
 
-$app->get('/questions/{id}/reponses','\quizz\control\QuizzController:getQuestionId');
+$app->get('/questions/{id}/reponses[/]','\quizz\control\QuizzController:getQuestionId');
+
+$app->get('/scores/{id}[/]','\quizz\control\QuizzController:getQuizzId');
+
+$app->post('/scores[/]','\quizz\control\QuizzController:addScore');
 
 $app->run();
