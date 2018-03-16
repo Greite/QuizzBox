@@ -41,6 +41,13 @@ io.on('connection', function (socket) {
 			pseudos.splice(i, 1);
 			io.emit('savePseudo',pseudos)
 			console.log(pseudos)
+			if (pseudos.length == 0) {
+				console.log('Reseting Server ! All clients left !');
+				reponses = 0;
+				quizz_nom = "";
+				quizz_id = "";
+				partie_on = false;
+			}
 		});
 
 		//question
