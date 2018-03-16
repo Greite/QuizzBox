@@ -1,7 +1,7 @@
 #/bin/bash
 
 gnome-terminal -e "docker-compose -f api_quizz/docker-compose.yml up"
-sleep 7
+sleep 5
 cd player/
 gnome-terminal -e "npm run dev"
 sleep 5

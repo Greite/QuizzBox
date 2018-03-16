@@ -90,12 +90,15 @@
  		}
  	},
  	mounted(){
- 		this.$socket.emit('recupId')
- 		this.inter = setInterval(this.timer, 1000)
- 		this.pseudo = window.bus.pseudo
+    this.$socket.emit('recupId')
+   	this.inter = setInterval(this.timer, 1000)
+    this.pseudo = window.bus.pseudo
  	},
  	sockets: {
  		saveId(data){
+      if (data.pseudo === "") {
+        this.$router.push({path: '/attente'})
+      }
  			this.idQuizz = data.quizz_id
  			this.pseudos = data.pseudos
  			window.axios.get('questions/'+data.quizz_id+'/reponses').then(response => {
