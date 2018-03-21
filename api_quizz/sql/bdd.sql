@@ -77,7 +77,7 @@ INSERT INTO `reponse` (`id`, `texte`, `etat`, `id_question`) VALUES
 (18,	'4',	1,	5),
 (19,	'887',	0,	5),
 (20,	'475',	0,	5),
-(21,	'4',	1,	5),
+(21,	'4',	0,	5),
 (22,	'belgique',	0,	6),
 (23,	'italie',	1,	6),
 (24,	'France',	0,	6),
@@ -98,6 +98,29 @@ INSERT INTO `reponse` (`id`, `texte`, `etat`, `id_question`) VALUES
 (39,	'La Suisse',	0,	10),
 (40,	'Le Pakistan',	0,	10),
 (41,	'Marseille',	1,	10);
+
+DROP TABLE IF EXISTS `score`;
+CREATE TABLE `score` (
+  `id` double NOT NULL AUTO_INCREMENT,
+  `score` int(11) NOT NULL,
+  `pseudo` varchar(50) NOT NULL,
+  `id_quizz` varchar(100) CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_quizz` (`id_quizz`),
+  CONSTRAINT `score_ibfk_1` FOREIGN KEY (`id_quizz`) REFERENCES `quizz` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `score` (`id`, `score`, `pseudo`, `id_quizz`) VALUES
+(1,	158,	'ok',	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(2,	70,	'leo',	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(3,	20,	'leo',	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(4,	80,	'leo',	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(5,	20,	'ok',	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(6,	120,	'ok',	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(7,	20,	'ok',	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(8,	57,	'test',	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(9,	0,	'ok',	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002'),
+(10,	38,	'ook',	'2c5c4bfd-2215-11e8-bbfa-0242ac1a0002');
 
 DROP TABLE IF EXISTS `theme`;
 CREATE TABLE `theme` (
@@ -141,7 +164,6 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `user` (`id`, `login`, `password`, `mail`) VALUES
-('32a4d78c-75c7-4bc1-bc81-2a55b5afde17',	'Michel',	'$2y$10$QgcFe0lt/crzktNQ0KUcjO3iyPYdNaYxt1LfwfFl04EZax4H.ASQW',	'michel@cestlebresil.samba'),
-('faecf33f-a3b1-4143-bf71-a3dd6761c15c',	'greite',	'$2y$10$RzG3jW2We0dS80DQa9TmJu39QJvO1Viibn5rsn2Rd1R8YuIp10ySi',	'greite@greite.fr');
+('32a4d78c-75c7-4bc1-bc81-2a55b5afde17',	'Michel',	'$2y$10$QgcFe0lt/crzktNQ0KUcjO3iyPYdNaYxt1LfwfFl04EZax4H.ASQW',	'michel@cestlebresil.samba');
 
--- 2018-03-16 13:13:25
+-- 2018-03-21 13:08:28
