@@ -101,7 +101,6 @@
         this.$router.push({path: '/attente'})
       }
  			this.idQuizz = data.quizz_id
- 			window.bus.id = this.idQuizz
  			this.pseudos = data.pseudos
  			window.axios.get('questions/'+data.quizz_id+'/reponses').then(response => {
  				this.questions = response.data

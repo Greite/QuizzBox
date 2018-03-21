@@ -86,9 +86,10 @@
 			}
 		},
 		mounted(){
-			window.axios.get('themes').then(response => {
-				this.themes = response.data.themes
-			})
+
+			/*window.axios.get('themes').then(response => {
+				this.$socket.emit('savefile',response.data.themes);
+			})*/
 		},
 		sockets: {
 			savePseudo(data) {
@@ -105,6 +106,9 @@
 			saveQuizz(data){
 				this.nomQuizz = data
 				window.bus.id = data
+			},
+			saveThemes(data){
+				this.themes = JSON.parse(data)
 			},
 			partieOn(){
 				this.$router.push({path: '/attente'})

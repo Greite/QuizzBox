@@ -1,6 +1,7 @@
 var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var fs = require('fs');
 var pseudos = [];
 var reponses = 0;
 var quizz_nom = "";
@@ -14,10 +15,24 @@ io.on('connection', function (socket) {
 		io.emit('partieOn')
 	}else {
 		var pseudo = "";
+		var tabjson;
 		io.emit('saveQuizz',quizz_nom)
 		io.emit('savePseudo',pseudos)
 
+		fs.readFile('themes.json', 'utf8', function (err, data) {
+			if (err) throw err;
+			io.emit('saveThemes',data)
+		});
+
 		//accueil
+		socket.on('savefile',function(data){
+			var json = JSON.stringify(data);
+			fs.appendFile('themes.json', json, function (err) {
+  			if (err) throw err;
+  				console.log('Saved!');
+			});
+		});
+
 		socket.on('nouveau_joueur',function(p){
 			pseudo = p
 			pseudos.push(pseudo)
