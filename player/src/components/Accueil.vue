@@ -105,7 +105,7 @@
 			},
 			saveQuizz(data){
 				this.nomQuizz = data
-				window.bus.id = data
+				window.bus.nomQuizz = data
 			},
 			saveThemes(data){
 				this.themes = JSON.parse(data)
@@ -131,6 +131,7 @@
 			},
 			selectQuizz(id,nom){
 				this.idQuizz = id
+				window.bus.id = id
 				this.$socket.emit('nomQuizz',nom)
 			}
 		}

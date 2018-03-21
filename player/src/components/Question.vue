@@ -117,7 +117,6 @@
  		},
  		nbReponses(data){
  			this.reponses = data
- 			console.log(this.reponses)
  		},
  	},
  	methods: {
@@ -126,8 +125,9 @@
  				score : this.score,
  				id_quizz : this.idQuizz,
  				pseudo : this.pseudo
- 			}).then(response => { 
+ 			}).then(response => {
  				this.$router.push({path: '/scores'});
+        this.$socket.emit('finPartie')
  			})
  		},
  		socketSuivant(){
