@@ -5,6 +5,7 @@ import Inscription from '@/components/Inscription'
 import QuizzCreation from '@/components/QuizzCreation'
 import QuizzListe from '@/components/QuizzListe'
 import QuestionCreation from '@/components/QuestionCreation'
+import Profil from '@/components/Profil'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
 		path: '/question-creation',
 		name: 'QuestionCreation',
 		component: QuestionCreation
+	},
+	{
+		path: '/profil',
+		name: 'Profil',
+		component: Profil
 	}
 	]
 })

@@ -21,12 +21,14 @@
 				<li><a href="#/quizz-creation">Créer un quizz</a></li>
 				<li><a href="#/question-creation">Créer une question</a></li>
 				<li><a href="#/quizz-liste">Liste des quizz</a></li>
+				<li><a href="#/profil">Profil</a></li>
 				<li><a @click="logOut" class="btn-floating btn-large waves-effect waves-light red tooltipped" data-position="bottom" data-delay="50" data-tooltip="Deconnexion"><i class="material-icons">close</i></a></li>
 			</ul>
 			<ul class="side-nav" id="mobile-demo">
 				<li><a href="#/quizz-creation">Créer un quizz</a></li>
 				<li><a href="#/question-creation">Créer une question</a></li>
 				<li><a href="#/quizz-liste">Liste des quizz</a></li>
+				<li><a href="#/profil">Profil</a></li>
 				<li><a href="#/" class="red">Deconnexion</a></li>
 			</ul>
 		</div>
