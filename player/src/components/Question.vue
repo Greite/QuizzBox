@@ -101,7 +101,6 @@
         this.$router.push({path: '/attente'})
       }
  			this.idQuizz = data.quizz_id
- 			window.bus.id = this.idQuizz
  			this.pseudos = data.pseudos
  			window.axios.get('questions/'+data.quizz_id+'/reponses').then(response => {
  				this.questions = response.data
@@ -118,7 +117,6 @@
  		},
  		nbReponses(data){
  			this.reponses = data
- 			console.log(this.reponses)
  		},
  	},
  	methods: {
@@ -127,8 +125,9 @@
  				score : this.score,
  				id_quizz : this.idQuizz,
  				pseudo : this.pseudo
- 			}).then(response => { 
+ 			}).then(response => {
  				this.$router.push({path: '/scores'});
+        this.$socket.emit('finPartie')
  			})
  		},
  		socketSuivant(){
