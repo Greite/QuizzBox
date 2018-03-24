@@ -6,6 +6,7 @@ var pseudos = [];
 var reponses = 0;
 var quizz_nom = "";
 var quizz_id = "";
+var nomQuizz = "";
 var partie_on = false;
 
 server.listen(3000);
@@ -19,21 +20,31 @@ io.on('connection', function (socket) {
 		io.emit('saveQuizz',quizz_nom)
 		io.emit('savePseudo',pseudos)
 
-		fs.readFile('themes.json', 'utf8', function (err, data) {
-			if (err) throw err;
-			io.emit('saveThemes',data)
-		});
-
-		//accueil
-		socket.on('savefile',function(data){
+		//InterfaceAdmin
+		socket.on('createFileThemes',function(data){
 			var json = JSON.stringify(data);
-			fs.appendFile('themes.json', json, function (err) {
+			fs.writeFile('themes.json', json, function (err) {
   			if (err) throw err;
   				console.log('Saved!');
 			});
 		});
 
-		socket.on('nouveau_joueur',function(p){
+		socket.on('createFileQuizz',function(data){
+			nomQuizz = data[1].split(' ').join('_');
+			var json = JSON.stringify(data[0]);
+			fs.appendFile(nomQuizz+'.json', json, function (err) {
+  			if (err) throw err;
+					console.log('Saved!');
+			});
+		});
+
+		//accueil
+		fs.readFile('themes.json', 'utf8', function (err, data) {
+			if (err) throw err;
+			io.emit('readThemes',data)
+		});
+
+			socket.on('nouveau_joueur',function(p){
 			pseudo = p
 			pseudos.push(pseudo)
 			io.emit('savePseudo',pseudos)

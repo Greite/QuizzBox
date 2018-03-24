@@ -85,12 +85,6 @@
 				inputPseudo: true
 			}
 		},
-		mounted(){
-
-			/*window.axios.get('themes').then(response => {
-				this.$socket.emit('savefile',response.data.themes);
-			})*/
-		},
 		sockets: {
 			savePseudo(data) {
 				this.pseudos = data
@@ -105,9 +99,8 @@
 			},
 			saveQuizz(data){
 				this.nomQuizz = data
-				window.bus.id = data
 			},
-			saveThemes(data){
+			readThemes(data){
 				this.themes = JSON.parse(data)
 			},
 			partieOn(){
@@ -131,6 +124,7 @@
 			},
 			selectQuizz(id,nom){
 				this.idQuizz = id
+				window.bus.id = id
 				this.$socket.emit('nomQuizz',nom)
 			}
 		}
