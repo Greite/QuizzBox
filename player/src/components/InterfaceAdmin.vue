@@ -49,8 +49,8 @@
 					window.axios.get('questions/'+e.id+'/reponses').then(response => {
 	          self.$socket.emit('createFileQuizz',[response.data,e.nom])
 					})
-				this.$socket.emit('createFileThemes',this.themes)
 				})
+				this.$socket.emit('createFileThemes',this.themes)
   		},
       selectQuizz(id,nom){
         this.nomQuizz.push({nom,id})

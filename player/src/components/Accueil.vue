@@ -99,6 +99,7 @@
 			},
 			saveQuizz(data){
 				this.nomQuizz = data
+				window.bus.nomQuizz = data
 			},
 			readThemes(data){
 				this.themes = JSON.parse(data)

@@ -91,7 +91,7 @@
  		}
  	},
  	mounted(){
-    this.$socket.emit('recupId')
+    this.$socket.emit('loadQuizz',window.bus.nomQuizz)
    	this.inter = setInterval(this.timer, 1000)
     this.pseudo = window.bus.pseudo
  	},
@@ -102,9 +102,7 @@
       }
  			this.idQuizz = data.quizz_id
  			this.pseudos = data.pseudos
- 			window.axios.get('questions/'+data.quizz_id+'/reponses').then(response => {
- 				this.questions = response.data
- 			})
+ 			this.questions = JSON.parse(data.data)
  		},
  		questionSuivant(){
  			this.i++
@@ -117,7 +115,6 @@
  		},
  		nbReponses(data){
  			this.reponses = data
- 			console.log(this.reponses)
  		},
  	},
  	methods: {
@@ -126,8 +123,9 @@
  				score : this.score,
  				id_quizz : this.idQuizz,
  				pseudo : this.pseudo
- 			}).then(response => { 
+ 			}).then(response => {
  				this.$router.push({path: '/scores'});
+        this.$socket.emit('finPartie')
  			})
  		},
  		socketSuivant(){
