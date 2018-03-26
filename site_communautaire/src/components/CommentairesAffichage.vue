@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="row">
+    <div v-bind:class="classalert" v-if="alertmess != ''">{{alertmess}}</div>
      <h1>{{quizz.nom}}</h1>
      <hr>
      <ul>
@@ -19,7 +20,6 @@
           <i class="material-icons right">send</i>
         </button>
       </div>
-      <button @click="rafraichirMessages">Rafraîchir</button>
      </div>
    </form>
   </div>
@@ -38,7 +38,9 @@ export default {
       commentaires : [],
       commentaire : '',
       inputmessage: '',
-      timer: ''
+      timer: '',
+      classalert:'',
+      alertmess: ''
     }
   },
   mounted() {
@@ -55,14 +57,22 @@ export default {
   },
   methods: {
       creerCommentaire() {
-      window.axios.post('quizz/'+this.$route.params.id+'/commentaires', {
-        message: this.inputmessage,
-        id_quizz: this.quizz.id,
-        id_auteur: this.$store.state.member.id
-      }, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
-        this.commentaire = ''
-        this.rafraichirMessages()
-      })
+        if (this.inputmessage!= '') {
+          window.axios.post('quizz/'+this.$route.params.id+'/commentaires', {
+            message: this.inputmessage,
+            id_quizz: this.quizz.id,
+            id_auteur: this.$store.state.member.id
+          }, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
+            this.alertmess = 'Le commentaire a été ajouté !'
+            this.classalert= 'card-panel green lighten-2'
+            this.commentaire = ''
+            this.rafraichirMessages()
+          })
+        }
+        else {
+          this.alertmess = 'Veuillez remplir le champ !'
+          this.classalert= 'card-panel red lighten-2'
+        }
     },
       rafraichirMessages() {
         window.axios.get('quizz/'+this.$route.params.id+'/commentaires')

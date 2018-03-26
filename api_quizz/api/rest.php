@@ -54,6 +54,10 @@ $app->get('/quizz/{id}/commentaires[/]','\quizz\control\QuizzController:getQuizz
 
 $app->post('/quizz/{id}/commentaires[/]','\quizz\control\QuizzController:addCommentaire');
 
+$app->put('/quizz/{id}/commentaires/{id_comm}[/]','\quizz\control\QuizzController:putCommentaire');
+
+$app->delete('/quizz/{id}/commentaires/{id_comm}[/]','\quizz\control\QuizzController:deleteCommentaire');
+
 $app->post('/quizz[/]','\quizz\control\QuizzController:addQuizz');
 
 $app->post('/question[/]','\quizz\control\QuizzController:addQuestion');

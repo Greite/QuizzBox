@@ -245,6 +245,81 @@ class QuizzController {
         }
    }
 
+   public function putCommentaire(Request $req, Response $resp, $args) {
+		try {
+			$secret = "quizzbox";
+			$h = $req->getHeader('Authorization')[0];
+			$tokenstring = sscanf($h, "Bearer %s")[0];
+			$token = JWT::decode($tokenstring, $secret, ['HS512']);
+			try{
+				$commentaire = Commentaire::findorFail($args['id_comm']);
+			}catch(ModelNotFoundException $e){
+				$resp = $resp->withStatus(401);
+				$resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Le token ne correspond pas"));
+				return $resp;
+			}
+
+			$parsedBody = $req->getParsedBody();
+			$commentaire->message = filter_var($parsedBody['message'],FILTER_SANITIZE_SPECIAL_CHARS);
+			$commentaire->save();
+			$resp = $resp->withStatus(201);
+      $resp = $resp->withJson(array('commentaire' => array('id' => $commentaire->id, 'message' => $commentaire->message, 'id_quizz' => $commentaire->id_quizz, 'id_auteur' => $commentaire->id_auteur)));
+			return $resp;
+		}catch(ExpiredException $e) {
+			$resp = $resp->withStatus(401);
+			$resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "La carte a expirée"));
+			return $resp;
+		}catch(SignatureInvalidException $e) {
+			$resp = $resp->withStatus(401);
+			$resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Mauvaise signature"));
+			return $resp;
+		}catch(BeforeValidException $e) {
+			$resp = $resp->withStatus(401);
+			$resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
+			return $resp;
+		}catch(\UnexpectedValueException $e) {
+			$resp = $resp->withStatus(401);
+			$resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
+			return $resp;
+		}
+	}
+
+  public function deleteCommentaire(Request $req, Response $resp, $args) {
+   try {
+     $secret = "quizzbox";
+     $h = $req->getHeader('Authorization')[0];
+     $tokenstring = sscanf($h, "Bearer %s")[0];
+     $token = JWT::decode($tokenstring, $secret, ['HS512']);
+     try{
+       $commentaire = Commentaire::findorFail($args['id_comm'])->delete();
+     }catch(ModelNotFoundException $e){
+       $resp = $resp->withStatus(401);
+       $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Le token ne correspond pas"));
+       return $resp;
+     }
+
+     $resp = $resp->withStatus(200);
+     $resp = $resp->withJson(array('message' => 'élément supprimé'));
+     return $resp;
+   }catch(ExpiredException $e) {
+     $resp = $resp->withStatus(401);
+     $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "La carte a expirée"));
+     return $resp;
+   }catch(SignatureInvalidException $e) {
+     $resp = $resp->withStatus(401);
+     $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Mauvaise signature"));
+     return $resp;
+   }catch(BeforeValidException $e) {
+     $resp = $resp->withStatus(401);
+     $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
+     return $resp;
+   }catch(\UnexpectedValueException $e) {
+     $resp = $resp->withStatus(401);
+     $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
+     return $resp;
+   }
+ }
+
     public function getQuestionId(Request $req, Response $resp, $args){
         try {
             $quest = Question::where('id_quizz','=',$args['id'])->with('reponses')->get();
