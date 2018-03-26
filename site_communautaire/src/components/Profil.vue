@@ -1,11 +1,8 @@
 <template>
 	<div class="row">
 		<div class="container">
+							<center><span class="aggrandir hide-on-small-only ">{{$store.state.member.login}}</span></center>
 			<div class="card">
-				<div class="card-image">
-					<img src="http://lorempixel.com/1110/200/abstract"/>
-					<span class="card-title aggrandir hide-on-small-only ">{{$store.state.member.login}}</span>
-				</div>
 				<div class="card-content valign center">
 					<p>Adresse e-mail : {{$store.state.member.mail}}</p>
 					<p>Vos créations</p>
@@ -36,10 +33,8 @@ export default {
 			theme : '',
 			users: [],
 			user: '',
-			compteur : 0
 		}
 	},
-	beforeUpdate() { this.compteur = 0 },
 	mounted() {
 		window.axios.get('themes').then(response => { 
 			this.themes = response.data.themes
@@ -55,7 +50,8 @@ export default {
 </script>
 <style scoped>
 .aggrandir{
- font-size: 5vw;
+ font-size: 3vw;
+ text-align: center;
 
 }
 </style>
