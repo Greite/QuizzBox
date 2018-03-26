@@ -125,7 +125,7 @@
  				pseudo : this.pseudo
  			}).then(response => {
  				this.$router.push({path: '/scores'});
-        this.$socket.emit('finPartie')
+        this.$socket.emit('finPartie',[this.score,this.pseudo])
  			})
  		},
  		socketSuivant(){

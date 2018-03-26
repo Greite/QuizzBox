@@ -2,8 +2,9 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var fs = require('fs');
-var ok = [];
+var dir = [];
 var pseudos = [];
+var tabScore = [];
 var reponses = 0;
 var quizz_nom = "";
 var quizz_id = "";
@@ -24,9 +25,9 @@ io.on('connection', function (socket) {
 		//test
 		fs.readdir('quizz/', function(err, items) {
     	for (var i = 0; i < items.length; i++) {
-    		ok.push(items[i].split('_').join(' '));
+    		dir.push(items[i].split('_').join(' '));
     	}
-			console.log(ok)
+			console.log(dir)
 		});
 
 		//InterfaceAdmin
@@ -103,5 +104,11 @@ io.on('connection', function (socket) {
 			reponses = reponses + 1;
 			io.emit('nbReponses',reponses)
 		});
+
+		
+
+		/*socket.on('finPartie',function(data){
+			tabScore.push(JSON.stringify(data));
+		})*/
 	}
 });
