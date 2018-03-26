@@ -65,7 +65,7 @@ export default {
           }, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
             this.alertmess = 'Le commentaire a été ajouté !'
             this.classalert= 'card-panel green lighten-2'
-            this.commentaire = ''
+            this.inputmessage = ''
             this.rafraichirMessages()
           })
         }
