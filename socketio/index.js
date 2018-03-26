@@ -72,14 +72,15 @@ io.on('connection', function (socket) {
 			io.emit('saveQuizz',nom)
 		});
 
-		socket.on('finPartie',function(id){
+		socket.on('finPartie',function(){
 			console.log('Reseting Server ! Game Over !');
-			reponses = 0;
-			quizz_nom = "";
-			quizz_id = "";
-			partie_on = false;
-			io.disconnect();
+			io.emit('redirectScore');
 		});
+
+		socket.on('saveScore',function(data){
+			tabScore.push(data);
+			console.log(tabScore)
+		})
 
 		socket.on('disconnect', function(reason){
 			var i = pseudos.indexOf(pseudo);
@@ -92,6 +93,7 @@ io.on('connection', function (socket) {
 				quizz_nom = "";
 				quizz_id = "";
 				partie_on = false;
+				tabScore = []
 			}
 		});
 
@@ -114,10 +116,10 @@ io.on('connection', function (socket) {
 			io.emit('nbReponses',reponses)
 		});
 
-		
-
-		/*socket.on('finPartie',function(data){
-			tabScore.push(JSON.stringify(data));
-		})*/
+		//Affichage scores
+		socket.on('loadQuizzId',function(){
+			io.emit('saveQuizzId',{quizz_id,quizz_nom,tabScore})
+			socket.disconnect();
+		})
 	}
 });
