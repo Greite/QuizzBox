@@ -19,7 +19,6 @@
           <i class="material-icons right">send</i>
         </button>
       </div>
-      <button @click="rafraichirMessages">Rafraîchir</button>
      </div>
    </form>
   </div>
