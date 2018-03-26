@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     deletePost(id) {
-      window.axios.delete('quizz/'+this.$route.params.id+'/commentaires/'+id).then(response => {
+      window.axios.delete('quizz/'+this.$route.params.id+'/commentaires/'+id, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
         window.bus.$emit('rechargerMessage')
       })
     },
@@ -68,8 +68,8 @@ export default {
     },
     modifPost(id){
       window.axios.put('quizz/'+this.$route.params.id+'/commentaires/'+id, {
-        commentaire: this.messageModif
-      }).then(response => {
+        message: this.messageModif
+      }, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
          this.modif=false;
          this.commentaire.message=this.messageModif
       })
