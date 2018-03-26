@@ -50,6 +50,10 @@ $app->get('/quizz[/]','\quizz\control\QuizzController:getQuizz');
 
 $app->get('/quizz/{id}[/]','\quizz\control\QuizzController:getQuizzId');
 
+$app->get('/quizz/{id}/commentaires[/]','\quizz\control\QuizzController:getQuizzComms');
+
+$app->post('/quizz/{id}/commentaires[/]','\quizz\control\QuizzController:addCommentaire');
+
 $app->post('/quizz[/]','\quizz\control\QuizzController:addQuizz');
 
 $app->post('/question[/]','\quizz\control\QuizzController:addQuestion');

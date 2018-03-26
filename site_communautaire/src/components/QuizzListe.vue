@@ -31,6 +31,7 @@
 						</div>
 						<div class="card-action">
 							<a href="#">Télécharger</a>
+							<router-link :to="{ name: 'CommentairesAffichage', params : {id:quizz.id} }">Espace commentaires</router-link>
 						</div>
 				  </div>
 			  </div>
@@ -55,6 +56,7 @@
 					</div>
 					<div class="card-action">
 						<a href="#">Télécharger</a>
+						<a href="#">Espace commentaires</a>
 					</div>
 				</div>
 			</div>
