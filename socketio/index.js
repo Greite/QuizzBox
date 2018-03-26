@@ -72,6 +72,15 @@ io.on('connection', function (socket) {
 			io.emit('saveQuizz',nom)
 		});
 
+		socket.on('finPartie',function(id){
+			console.log('Reseting Server ! Game Over !');
+			reponses = 0;
+			quizz_nom = "";
+			quizz_id = "";
+			partie_on = false;
+			io.disconnect();
+		});
+
 		socket.on('disconnect', function(reason){
 			var i = pseudos.indexOf(pseudo);
 			pseudos.splice(i, 1);
