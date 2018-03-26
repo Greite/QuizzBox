@@ -14,5 +14,10 @@ class User extends \Illuminate\Database\Eloquent\Model
 
     public function quizz() {
        return $this->hasMany('quizz\model\Quizz', 'id_createur');
-	}
+	  }
+
+    public function commentaires() {
+      return $this->hasMany('quizz\model\Commentaire', 'id_auteur');
+    }
+
 }

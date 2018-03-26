@@ -167,7 +167,7 @@ class QuizzController {
 
     public function getQuizzId(Request $req, Response $resp, $args){
         try {
-            $quizz = Quizz::where('id','=',$args['id'])->with('questions')->get();
+            $quizz = Quizz::where('id','=',$args['id'])->with('questions')->first();
         } catch (ModelNotFoundException $e) {
             $resp = $resp->withStatus(404);
             $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Ressource non disponible : /quizz/'.$args['id']));
@@ -182,6 +182,67 @@ class QuizzController {
         $resp = $resp->withJson($tabquizz);
         return $resp;
     }
+
+    public function getQuizzComms(Request $req, Response $resp, $args){
+        try {
+            $commentaires = Quizz::findorFail($args['id'])->commentaires;
+        } catch (ModelNotFoundException $e) {
+            $resp = $resp->withStatus(404);
+            $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Ressource non disponible : /quizz/'.$args['id'].'commentaires'));
+            return $resp;
+        }
+        $tabcomms=[
+            "type"=>"collection",
+            "meta"=>[$date=date('d/m/y')],
+            "commentaires"=>$commentaires,
+        ];
+        $resp = $resp->withStatus(200);
+        $resp = $resp->withJson($tabcomms);
+        return $resp;
+    }
+
+    public function addCommentaire(Request $req, Response $resp, $args){
+       try {
+           $secret = "quizzbox";
+           $h = $req->getHeader('Authorization')[0];
+           $tokenstring = sscanf($h, "Bearer %s")[0];
+           $token = JWT::decode($tokenstring, $secret, ['HS512']);
+           try{
+               User::findOrFail($token->id);
+           }catch(ModelNotFoundException $e){
+               $resp = $resp->withStatus(401);
+               $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Le token ne correspond pas"));
+               return $resp;
+           }
+           $parsedBody = $req->getParsedBody();
+           $commentaire = new Commentaire;
+           $uuid4 = Uuid::uuid4();
+           $commentaire->id = $uuid4;
+           $commentaire->message = filter_var($parsedBody['message'], FILTER_SANITIZE_SPECIAL_CHARS);
+           $commentaire->id_quizz = filter_var($parsedBody['id_quizz'], FILTER_SANITIZE_SPECIAL_CHARS);
+           $commentaire->id_auteur = filter_var($parsedBody['id_auteur'], FILTER_SANITIZE_SPECIAL_CHARS);
+           $commentaire->save();
+           $resp = $resp->withStatus(201);
+           $resp = $resp->withJson(array('commentaire' => array('id' => $commentaire->id, 'message' => $commentaire->message, 'id_quizz' => $commentaire->id_quizz, 'id_auteur' => $commentaire->id_auteur)));
+           return $resp;
+       }catch(ExpiredException $e) {
+           $resp = $resp->withStatus(401);
+           $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "La carte a expirée"));
+           return $resp;
+       }catch(SignatureInvalidException $e) {
+           $resp = $resp->withStatus(401);
+           $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Mauvaise signature"));
+           return $resp;
+       }catch(BeforeValidException $e) {
+           $resp = $resp->withStatus(401);
+           $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
+           return $resp;
+       }catch(\UnexpectedValueException $e) {
+           $resp = $resp->withStatus(401);
+           $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
+           return $resp;
+       }
+   }
 
     public function getQuestionId(Request $req, Response $resp, $args){
         try {
@@ -346,7 +407,7 @@ class QuizzController {
             $tabjson['reponse'.$i] = array('id' => $reponse->id, 'texte' => $reponse->texte, 'etat' => $reponse->etat, 'id_question' => $reponse->id_question);
             $i++;
             }
-            
+
             $resp = $resp->withStatus(201);
             $resp = $resp->withJson(array('reponses' => $tabjson));
             return $resp;

@@ -23,4 +23,8 @@ class Quizz extends \Illuminate\Database\Eloquent\Model
 	public function createur() {
     return $this->belongsTo('quizz\model\User', 'id_createur');
 	}
+
+  public function commentaires() {
+    return $this->hasMany('quizz\model\Commentaire', 'id_quizz');
+  }
 }

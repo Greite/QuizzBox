@@ -6,6 +6,7 @@ import QuizzCreation from '@/components/QuizzCreation'
 import QuizzListe from '@/components/QuizzListe'
 import QuestionCreation from '@/components/QuestionCreation'
 import Profil from '@/components/Profil'
+import CommentairesAffichage from '@/components/CommentairesAffichage'
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router({
 		path: '/profil',
 		name: 'Profil',
 		component: Profil
+	},
+	{
+		path: '/commentaires-affichage',
+		name: 'CommentairesAffichage',
+		component: CommentairesAffichage
 	}
 	]
 })
