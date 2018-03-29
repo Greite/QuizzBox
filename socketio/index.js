@@ -2,8 +2,9 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var fs = require('fs');
-var ok = [];
+var dir = [];
 var pseudos = [];
+var tabScore = [];
 var reponses = 0;
 var quizz_nom = "";
 var quizz_id = "";
@@ -21,43 +22,52 @@ io.on('connection', function (socket) {
 		io.emit('saveQuizz',quizz_nom)
 		io.emit('savePseudo',pseudos)
 
-		//test
-		fs.readdir('quizz/', function(err, items) {
-    	for (var i = 0; i < items.length; i++) {
-    		ok.push(items[i].split('_').join(' '));
-    	}
-			console.log(ok)
-		});
-
 		//InterfaceAdmin
 		socket.on('createFileThemes',function(data){
 			var json = JSON.stringify(data);
 			fs.writeFile('themes.json', json, function (err) {
-  			if (err) throw err;
-  				console.log('Saved!');
+				if (err) throw err;
+				console.log('Saved!');
 			});
 		});
 
 		socket.on('createFileQuizz',function(data){
+			var write = false;
 			nomQuizz = data[1].split(' ').join('_');
 			var json = JSON.stringify(data[0]);
-			fs.appendFile('quizz/'+nomQuizz+'.json', json, function (err) {
-  			if (err) throw err;
-					console.log('Saved!');
+
+			fs.readdir('quizz/', function(err, items) {
+				items.forEach(function(e){
+					if (nomQuizz+".json" === e) {
+						write = true
+					}
+				})
 			});
+
+			if (!write) {
+				fs.writeFile('quizz/'+nomQuizz+'.json', json, function (err) {
+					if (err) throw err;
+					console.log('Write ! '+nomQuizz);
+				});
+			}else{
+				fs.appendFile('quizz/'+nomQuizz+'.json', json, function (err) {
+					if (err) throw err;
+					console.log('Append ! '+nomQuizz);
+				});
+			}
 		});
 
 		//accueil
-		fs.readFile('themes.json', 'utf8', function (err, data) {
-			if (err) throw err;
-			io.emit('readThemes',data)
-		});
-
-			socket.on('nouveau_joueur',function(p){
+		socket.on('nouveau_joueur',function(p){
 			pseudo = p
 			pseudos.push(pseudo)
 			io.emit('savePseudo',pseudos)
 			console.log(pseudos)
+
+			fs.readFile('themes.json', 'utf8', function (err, data) {
+				if (err) throw err;
+				io.emit('readThemes',data)
+			});
 		});
 
 		socket.on('commencer',function(id){
@@ -71,14 +81,15 @@ io.on('connection', function (socket) {
 			io.emit('saveQuizz',nom)
 		});
 
-		socket.on('finPartie',function(id){
+		socket.on('finPartie',function(){
 			console.log('Reseting Server ! Game Over !');
-			reponses = 0;
-			quizz_nom = "";
-			quizz_id = "";
-			partie_on = false;
-			io.disconnect();
+			io.emit('redirectScore');
 		});
+
+		socket.on('saveScore',function(data){
+			tabScore.push(data);
+			console.log(tabScore)
+		})
 
 		socket.on('disconnect', function(reason){
 			var i = pseudos.indexOf(pseudo);
@@ -87,10 +98,15 @@ io.on('connection', function (socket) {
 			console.log(pseudos)
 			if (pseudos.length == 0) {
 				console.log('Reseting Server ! All clients left !');
+				dir = [];
+				pseudos = [];
+				tabScore = [];
 				reponses = 0;
 				quizz_nom = "";
 				quizz_id = "";
+				nomQuizz = "";
 				partie_on = false;
+
 			}
 		});
 
@@ -112,5 +128,11 @@ io.on('connection', function (socket) {
 			reponses = reponses + 1;
 			io.emit('nbReponses',reponses)
 		});
+
+		//Affichage scores
+		socket.on('loadQuizzId',function(){
+			io.emit('saveQuizzId',{quizz_id,quizz_nom,tabScore})
+			socket.disconnect();
+		})
 	}
 });

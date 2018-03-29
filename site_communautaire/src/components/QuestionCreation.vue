@@ -2,7 +2,7 @@
 	<div class="row">
 		<div v-bind:class="classalert" v-if="message != ''">{{message}}</div>
 		<form class="col s12" @submit="creerQuestion">
-			<div cla0ss="row">
+			<div class="row">
 				<label> Vos quizz</label>
 				<select id="quizz" v-model="quizz" class="browser-default col s12">
 					<option v-if="quizz.id_createur == $store.state.member.id" v-for="quizz in quizzs" v-bind:value="quizz.id">{{quizz.nom}}</option>
@@ -80,7 +80,7 @@ export default {
 		}
 	},
 	mounted () {
-		window.axios.get('quizz').then(response => { 
+		window.axios.get('quizz').then(response => {
 			this.quizzs = response.data.quizz
 		})
 	},
@@ -110,7 +110,7 @@ export default {
 					intitule: this.intitule,
 					id_quizz: this.quizz,
 				}, {headers:  {'Authorization': 'Bearer ' + this.$store.state.member.token }}).then(response => {
-					
+
 					window.axios.post('reponses', {
 
 					reponses: [this.reponse1, this.reponse2, this.reponse3, this.reponse4],
