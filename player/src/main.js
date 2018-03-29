@@ -7,6 +7,7 @@ import socketio from 'socket.io-client';
 import VueSocketIO from 'vue-socket.io';
 import axios from 'axios'
 
+
 window.axios = axios.create({
 	baseURL: 'http://api.quizzbox.local:10080'
 });

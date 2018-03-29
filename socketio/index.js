@@ -22,43 +22,52 @@ io.on('connection', function (socket) {
 		io.emit('saveQuizz',quizz_nom)
 		io.emit('savePseudo',pseudos)
 
-		//test
-		fs.readdir('quizz/', function(err, items) {
-    	for (var i = 0; i < items.length; i++) {
-    		dir.push(items[i].split('_').join(' '));
-    	}
-			console.log(dir)
-		});
-
 		//InterfaceAdmin
 		socket.on('createFileThemes',function(data){
 			var json = JSON.stringify(data);
 			fs.writeFile('themes.json', json, function (err) {
-  			if (err) throw err;
-  				console.log('Saved!');
+				if (err) throw err;
+				console.log('Saved!');
 			});
 		});
 
 		socket.on('createFileQuizz',function(data){
+			var write = false;
 			nomQuizz = data[1].split(' ').join('_');
 			var json = JSON.stringify(data[0]);
-			fs.appendFile('quizz/'+nomQuizz+'.json', json, function (err) {
-  			if (err) throw err;
-					console.log('Saved!');
+
+			fs.readdir('quizz/', function(err, items) {
+				items.forEach(function(e){
+					if (nomQuizz+".json" === e) {
+						write = true
+					}
+				})
 			});
+
+			if (!write) {
+				fs.writeFile('quizz/'+nomQuizz+'.json', json, function (err) {
+					if (err) throw err;
+					console.log('Write ! '+nomQuizz);
+				});
+			}else{
+				fs.appendFile('quizz/'+nomQuizz+'.json', json, function (err) {
+					if (err) throw err;
+					console.log('Append ! '+nomQuizz);
+				});
+			}
 		});
 
 		//accueil
-		fs.readFile('themes.json', 'utf8', function (err, data) {
-			if (err) throw err;
-			io.emit('readThemes',data)
-		});
-
-			socket.on('nouveau_joueur',function(p){
+		socket.on('nouveau_joueur',function(p){
 			pseudo = p
 			pseudos.push(pseudo)
 			io.emit('savePseudo',pseudos)
 			console.log(pseudos)
+
+			fs.readFile('themes.json', 'utf8', function (err, data) {
+				if (err) throw err;
+				io.emit('readThemes',data)
+			});
 		});
 
 		socket.on('commencer',function(id){
@@ -89,11 +98,15 @@ io.on('connection', function (socket) {
 			console.log(pseudos)
 			if (pseudos.length == 0) {
 				console.log('Reseting Server ! All clients left !');
+				dir = [];
+				pseudos = [];
+				tabScore = [];
 				reponses = 0;
 				quizz_nom = "";
 				quizz_id = "";
+				nomQuizz = "";
 				partie_on = false;
-				tabScore = []
+
 			}
 		});
 

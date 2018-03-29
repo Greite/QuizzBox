@@ -5,6 +5,7 @@
 				<div class="card-content black-text">
 					<span class="card-title">Accueil</span>
 					<p>Bienvenue sur le player QuizzBox</p>
+					<a v-if="inputPseudo" href="#/admin">Admin</a>
 				</div>
 				<div class="card-action" v-if="inputPseudo">
 					<p>Veuillez choisir un pseudo</p>
