@@ -31,7 +31,7 @@
 						</div>
 						<div class="card-action">
 							<a href="#">Télécharger</a>
-							<span v-for="moyenne in moyennes">{{moyenne}}</span>
+							<span v-for="moyenne in moyennes" v-if="moyenne.id == quizz.id">Note moyenne : {{moyenne.moyenne}}/5</span>
 							<p><router-link :to="{ name: 'CommentairesAffichage', params : {id:quizz.id} }">Espace commentaires</router-link></p>
 						</div>
 				  </div>
@@ -40,7 +40,7 @@
 		</div>
 
 		<div class="row" v-if="picked == 1">
-			<div class="row col s12 l6 m3">
+			<div class="row col s12 m6 l3">
 				<label >Rechercher un quizz</label>
 				<div class="input-field col s12">
 					<input id="quizz" v-model="inputquizz" type="text" class="validate">
@@ -57,7 +57,7 @@
 					</div>
 					<div class="card-action">
 						<a href="#">Télécharger</a>
-						<span>{{moyenne}}</span>
+						<span v-for="moyenne in moyennes" v-if="moyenne.id == quizz.id">Note moyenne : {{moyenne.moyenne}}/5</span>
 						<p><router-link :to="{ name: 'CommentairesAffichage', params : {id:quizz.id} }">Espace commentaires</router-link></p>
 					</div>
 				</div>
@@ -96,17 +96,20 @@ export default {
 			var self = this
 			this.quizzs = response.data.quizz
 			response.data.quizz.forEach(function(element) {
-				let moyenne = 0
+				var moyenne = 0
+				var id = element.id
 				window.axios.get('quizz/'+element.id+'/notes').then(response => {
-					let total = 0
-					let i = 0
-					response.data.notes.forEach(function(element) {
-						total+=element.valeur
+					var total = 0
+					var i = 0
+					response.data.notes.forEach(function(e) {
+						total+=e.valeur
 						i++
 					})
 				  moyenne = total/i
+					console.log(id)
+					self.moyennes.push({id, moyenne})
 				})
-				self.moyennes[element.id] = moyenne	
+
 			})
 		})
 	},
