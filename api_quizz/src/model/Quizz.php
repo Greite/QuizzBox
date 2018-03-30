@@ -27,4 +27,8 @@ class Quizz extends \Illuminate\Database\Eloquent\Model
   public function commentaires() {
     return $this->hasMany('quizz\model\Commentaire', 'id_quizz');
   }
+
+  public function notes() {
+    return $this->hasMany('quizz\model\Note', 'id_quizz');
+  }
 }

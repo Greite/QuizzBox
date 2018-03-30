@@ -31,6 +31,7 @@
 						</div>
 						<div class="card-action">
 							<a href="#">Télécharger</a>
+							<span v-for="moyenne in moyennes">{{moyenne}}</span>
 							<p><router-link :to="{ name: 'CommentairesAffichage', params : {id:quizz.id} }">Espace commentaires</router-link></p>
 						</div>
 				  </div>
@@ -56,6 +57,7 @@
 					</div>
 					<div class="card-action">
 						<a href="#">Télécharger</a>
+						<span>{{moyenne}}</span>
 						<p><router-link :to="{ name: 'CommentairesAffichage', params : {id:quizz.id} }">Espace commentaires</router-link></p>
 					</div>
 				</div>
@@ -78,7 +80,9 @@ export default {
 			users: [],
 			user: '',
 			inputquizz:'',
-			picked:''
+			picked:'',
+			moyennes: [],
+			moyenne: ''
 		}
 	},
 	mounted() {
@@ -89,7 +93,21 @@ export default {
 			this.users = response.data.users
 		})
 		window.axios.get('quizz').then(response => {
+			var self = this
 			this.quizzs = response.data.quizz
+			response.data.quizz.forEach(function(element) {
+				let moyenne = 0
+				window.axios.get('quizz/'+element.id+'/notes').then(response => {
+					let total = 0
+					let i = 0
+					response.data.notes.forEach(function(element) {
+						total+=element.valeur
+						i++
+					})
+				  moyenne = total/i
+				})
+				self.moyennes[element.id] = moyenne	
+			})
 		})
 	},
 	methods: {
