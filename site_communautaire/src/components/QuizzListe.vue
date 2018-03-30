@@ -13,7 +13,7 @@
 		</div>
 
 		<div class="row" v-if="picked == 0">
-			<div class="row col s3">
+			<div class="row col s12 m6 l3">
 				<label >Rechercher un thème</label>
 				<select id="selected" v-model="selected" class="browser-default">
 					<option v-for="theme in themes" v-bind:value="theme.id">{{theme.nom}}</option>
@@ -23,7 +23,7 @@
 			  <h4>{{theme.nom}}</h4>
 			  <p>{{theme.description}}</p>
 
-			  <div class="row col s3" v-for="quizz in theme.quizz">
+			  <div class="row col s12 m6 l3" v-for="quizz in theme.quizz">
 				  <div class="card blue-grey darken-1">
 						<div class="card-content white-text">
 							<span class="card-title">{{quizz.nom}}</span>
@@ -31,7 +31,7 @@
 						</div>
 						<div class="card-action">
 							<a href="#">Télécharger</a>
-							<router-link :to="{ name: 'CommentairesAffichage', params : {id:quizz.id} }">Espace commentaires</router-link>
+							<p><router-link :to="{ name: 'CommentairesAffichage', params : {id:quizz.id} }">Espace commentaires</router-link></p>
 						</div>
 				  </div>
 			  </div>
@@ -39,7 +39,7 @@
 		</div>
 
 		<div class="row" v-if="picked == 1">
-			<div class="row col s3">
+			<div class="row col s12 l6 m3">
 				<label >Rechercher un quizz</label>
 				<div class="input-field col s12">
 					<input id="quizz" v-model="inputquizz" type="text" class="validate">
@@ -56,7 +56,7 @@
 					</div>
 					<div class="card-action">
 						<a href="#">Télécharger</a>
-						<a href="#">Espace commentaires</a>
+						<p><router-link :to="{ name: 'CommentairesAffichage', params : {id:quizz.id} }">Espace commentaires</router-link></p>
 					</div>
 				</div>
 			</div>

@@ -9,7 +9,7 @@
 		<div class="row col s12" v-for="theme in themes">
 			<h4>{{theme.nom}}</h4>
 			<p>{{theme.description}}</p>
-			<div class="row col s2" v-for="quizz in theme.quizz" v-if='$store.state.member.id == quizz.id_createur'>
+			<div class="row col s12 m6 l3" v-for="quizz in theme.quizz" v-if='$store.state.member.id == quizz.id_createur'>
 
 				<div class="card blue-grey darken-1">
 					<div class="card-content white-text">
@@ -38,10 +38,10 @@ export default {
 		}
 	},
 	mounted() {
-		window.axios.get('themes').then(response => { 
+		window.axios.get('themes').then(response => {
 			this.themes = response.data.themes
 		})
-		window.axios.get('users').then(response => { 
+		window.axios.get('users').then(response => {
 			this.users = response.data.users
 		})
 	},

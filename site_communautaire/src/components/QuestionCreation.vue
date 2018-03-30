@@ -1,7 +1,7 @@
 <template>
 	<div class="row">
 		<div v-bind:class="classalert" v-if="message != ''">{{message}}</div>
-		<form class="col s12" @submit="creerQuestion">
+		<form class="col s12 m6 l3 offset-m3 offset-l4" @submit="creerQuestion">
 			<div class="row">
 				<label> Vos quizz</label>
 				<select id="quizz" v-model="quizz" class="browser-default col s12">

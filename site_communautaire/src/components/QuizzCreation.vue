@@ -1,7 +1,7 @@
 <template>
 	<div class="row">
 		<div v-bind:class="classalert" v-if="message != ''">{{message}}</div>
-		<form class="col s12" @submit="creerQuizz">
+		<form class="col s12 m6 l3 offset-l4" @submit="creerQuizz">
 			<div class="row">
 				<div class="input-field col s12">
 					<input id="nom" v-model="nom" type="text" class="validate">
@@ -15,7 +15,7 @@
 				</select>
 			</div>
 			<div class="row">
-				<button class="btn-large waves-effect waves-light col s4 offset-s4" type="submit">Créer le quizz
+				<button class="btn-large waves-effect waves-light col offset-s3 offset-m4 offset-l4" type="submit">Créer le quizz
 					<i class="material-icons right">send</i>
 				</button>
 			</div>
@@ -37,12 +37,12 @@ export default {
 		}
 	},
 	mounted () {
-		window.axios.get('themes').then(response => { 
-			this.themes = response.data.themes  
+		window.axios.get('themes').then(response => {
+			this.themes = response.data.themes
 		})
 	},
 	methods: {
-		creerQuizz() {  
+		creerQuizz() {
 			let message = ''
 			if (this.theme == '') {
 				message+="Veuillez choisir un thème. "

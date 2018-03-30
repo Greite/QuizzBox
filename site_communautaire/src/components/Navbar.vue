@@ -1,7 +1,8 @@
 <template>
 	<nav v-if="!this.$store.state.member">
 		<div class="nav-wrapper grey darken-3">
-			<a href="#/accueil" class="brand-logo">Site communautaire - QuizzBox</a>
+			<a href="#/accueil" class="brand-logo hide-on-small-only">Site communautaire - QuizzBox</a>
+			<a href="#/accueil" class="brand-logo hide-on-med-and-up">QuizzBox</a>
 			<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 			<ul class="right hide-on-med-and-down">
 				<li><a href="#/inscription">Inscription</a></li>
@@ -15,7 +16,8 @@
 	</nav>
 	<nav v-else>
 		<div class="nav-wrapper grey darken-3">
-			<a href="#/accueil" class="brand-logo">Site communautaire - QuizzBox</a>
+			<a href="#/accueil" class="brand-logo hide-on-small-only">Site communautaire - QuizzBox</a>
+			<a href="#/accueil" class="brand-logo hide-on-med-and-up">QuizzBox</a>
 			<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 			<ul class="right hide-on-med-and-down">
 				<li><a href="#/quizz-creation">Créer un quizz</a></li>
@@ -35,7 +37,7 @@
 	</nav>
 </template>
 
-<script>   
+<script>
 
 export default {
 	name: 'Navbar',

@@ -28,7 +28,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<button class="btn-large waves-effect waves-light col s4 offset-s4" type="submit" name="action">Inscription
+				<button class="btn-large waves-effect waves-light col s4 offset-s4" type="submit">Inscription
 					<i class="material-icons right">send</i>
 				</button>
 			</div>

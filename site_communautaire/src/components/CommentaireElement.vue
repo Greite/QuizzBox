@@ -14,7 +14,6 @@
       </br>
       <button @click="modification" class="btn btn-outline-warning">Modifier</button>
       <button @click="deletePost(commentaire.id)" class="btn btn-outline-danger">Supprimer</button>
-
     </span>
   </p>
 
@@ -39,7 +38,7 @@ export default {
       modif: false,
       messageModif: "",
       users: [],
-      user: ''
+      user: '',
     }
   },
   mounted() {

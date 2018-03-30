@@ -40,7 +40,7 @@ export default {
 			}).then((response) => {
 				this.$store.commit('setMember', response.data);
 				this.$store.commit('setToken', response.data.token);
-				this.$router.push({path: '/accueil'});
+				this.$router.push({path: '/profil'});
 			}).catch((error) => {
 				console.log(error)
 			})
