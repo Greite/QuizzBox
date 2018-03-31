@@ -70,4 +70,10 @@ $app->get('/scores/{id}[/]','\quizz\control\QuizzController:getScoresId');
 
 $app->post('/scores[/]','\quizz\control\QuizzController:addScore');
 
+$app->get('/quizz/{id}/notes[/]','\quizz\control\QuizzController:getQuizzNotes');
+
+$app->post('/quizz/{id}/notes[/]','\quizz\control\QuizzController:addNote');
+
+$app->put('/quizz/{id}/notes/{id_note}[/]','\quizz\control\QuizzController:putNote');
+
 $app->run();

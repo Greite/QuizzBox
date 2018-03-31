@@ -13,6 +13,7 @@ use quizz\model\Reponse;
 use quizz\model\User;
 use quizz\model\Score;
 use quizz\model\Commentaire;
+use quizz\model\Note;
 
 use Ramsey\Uuid\Uuid;
 use Firebase\JWT\JWT;
@@ -319,6 +320,106 @@ class QuizzController {
      return $resp;
    }
  }
+
+ public function getQuizzNotes(Request $req, Response $resp, $args){
+     try {
+         $notes = Quizz::findorFail($args['id'])->notes;
+     } catch (ModelNotFoundException $e) {
+         $resp = $resp->withStatus(404);
+         $resp = $resp->withJson(array('type' => 'error', 'error' => 404, 'message' => 'Ressource non disponible : /quizz/'.$args['id'].'notes'));
+         return $resp;
+     }
+     $tabnotes=[
+         "type"=>"collection",
+         "meta"=>[$date=date('d/m/y')],
+         "notes"=>$notes,
+     ];
+     $resp = $resp->withStatus(200);
+     $resp = $resp->withJson($tabnotes);
+     return $resp;
+ }
+
+ public function addNote(Request $req, Response $resp, $args){
+     try {
+         $secret = "quizzbox";
+         $h = $req->getHeader('Authorization')[0];
+         $tokenstring = sscanf($h, "Bearer %s")[0];
+         $token = JWT::decode($tokenstring, $secret, ['HS512']);
+         try{
+             User::findOrFail($token->id);
+         }catch(ModelNotFoundException $e){
+             $resp = $resp->withStatus(401);
+             $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Le token ne correspond pas"));
+             return $resp;
+         }
+         $parsedBody = $req->getParsedBody();
+         $note = new Note;
+         $uuid4 = Uuid::uuid4();
+         $note->id = $uuid4;
+         $note->valeur = filter_var($parsedBody['valeur'], FILTER_SANITIZE_SPECIAL_CHARS);
+         $note->id_quizz = filter_var($parsedBody['id_quizz'], FILTER_SANITIZE_SPECIAL_CHARS);
+         $note->id_user = filter_var($parsedBody['id_user'], FILTER_SANITIZE_SPECIAL_CHARS);
+         $note->save();
+         $resp = $resp->withStatus(201);
+         $resp = $resp->withJson(array('note' => array('id' => $note->id, 'message' => $note->valeur, 'id_quizz' => $note->id_quizz, 'id_auteur' => $note->id_user)));
+         return $resp;
+     }catch(ExpiredException $e) {
+         $resp = $resp->withStatus(401);
+         $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "La carte a expirée"));
+         return $resp;
+     }catch(SignatureInvalidException $e) {
+         $resp = $resp->withStatus(401);
+         $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Mauvaise signature"));
+         return $resp;
+     }catch(BeforeValidException $e) {
+         $resp = $resp->withStatus(401);
+         $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
+         return $resp;
+     }catch(\UnexpectedValueException $e) {
+         $resp = $resp->withStatus(401);
+         $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
+         return $resp;
+     }
+}
+
+public function putNote(Request $req, Response $resp, $args) {
+ try {
+   $secret = "quizzbox";
+   $h = $req->getHeader('Authorization')[0];
+   $tokenstring = sscanf($h, "Bearer %s")[0];
+   $token = JWT::decode($tokenstring, $secret, ['HS512']);
+   try{
+     $note = Note::findorFail($args['id_note']);
+   }catch(ModelNotFoundException $e){
+     $resp = $resp->withStatus(401);
+     $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Le token ne correspond pas"));
+     return $resp;
+   }
+
+   $parsedBody = $req->getParsedBody();
+   $note->valeur = filter_var($parsedBody['valeur'],FILTER_SANITIZE_SPECIAL_CHARS);
+   $note->save();
+   $resp = $resp->withStatus(201);
+   $resp = $resp->withJson(array('valeur' => array('id' => $note->id, 'message' => $note->valeur, 'id_quizz' => $note->id_quizz, 'id_auteur' => $note->id_user)));
+   return $resp;
+ }catch(ExpiredException $e) {
+   $resp = $resp->withStatus(401);
+   $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "La carte a expirée"));
+   return $resp;
+ }catch(SignatureInvalidException $e) {
+   $resp = $resp->withStatus(401);
+   $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Mauvaise signature"));
+   return $resp;
+ }catch(BeforeValidException $e) {
+   $resp = $resp->withStatus(401);
+   $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
+   return $resp;
+ }catch(\UnexpectedValueException $e) {
+   $resp = $resp->withStatus(401);
+   $resp = $resp->withJson(array('type' => 'error', 'error' => 401, 'message' => "Les informations ne correspondent pas"));
+   return $resp;
+ }
+}
 
     public function getQuestionId(Request $req, Response $resp, $args){
         try {

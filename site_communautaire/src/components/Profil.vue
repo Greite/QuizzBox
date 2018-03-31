@@ -1,25 +1,27 @@
 <template>
 	<div class="row">
 		<div class="container">
-							<center><span class="aggrandir hide-on-small-only ">{{$store.state.member.login}}</span></center>
-			<div class="card">
-				<div class="card-content valign center">
-					<p>Adresse e-mail : {{$store.state.member.mail}}</p>
-					<p>Vos créations</p>
-					<div v-for="theme in themes">
-							<div class="card-tabs">
-								<ul class="tabs tabs-fixed-width">
-									<div class="tab red-text text-darken-2">{{theme.nom}}</div>
-								</ul>
-							</div>
-						<div class="card-content" v-for="quizz in theme.quizz" v-if='$store.state.member.id == quizz.id_createur'>
-							<p class="tab blue-text text-darken-3">{{quizz.nom}}</p>
-						</div>		
+			<center><span class="aggrandir hide-on-small-only ">{{$store.state.member.login}}</span>
+				<br>
+				<span class="hide-on-small-only">Adresse e-mail : {{$store.state.member.mail}}</span>
+			</center>
+		</div>
+		<div class="row col s12" v-for="theme in themes">
+			<h4>{{theme.nom}}</h4>
+			<p>{{theme.description}}</p>
+			<div class="row col s12 m6 l3" v-for="quizz in theme.quizz" v-if='$store.state.member.id == quizz.id_createur'>
+
+				<div class="card blue-grey darken-1">
+					<div class="card-content white-text">
+						<p>{{quizz.nom}}</p>
+					</div>
+					<div class="card-action">
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
 </template>
 
 <script>
@@ -36,22 +38,24 @@ export default {
 		}
 	},
 	mounted() {
-		window.axios.get('themes').then(response => { 
+		window.axios.get('themes').then(response => {
 			this.themes = response.data.themes
 		})
-		window.axios.get('users').then(response => { 
+		window.axios.get('users').then(response => {
 			this.users = response.data.users
 		})
 	},
 	methods: {
-
 	}
 }
 </script>
 <style scoped>
+
 .aggrandir{
- font-size: 3vw;
- text-align: center;
+	font-size: 3vw;
+	text-align: center;
 
 }
+
+
 </style>

@@ -20,4 +20,8 @@ class User extends \Illuminate\Database\Eloquent\Model
       return $this->hasMany('quizz\model\Commentaire', 'id_auteur');
     }
 
+    public function notes() {
+      return $this->hasMany('quizz\model\Note', 'id_user');
+    }
+
 }

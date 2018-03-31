@@ -2,7 +2,7 @@
 
 
 
-  <p v-if="!modif">
+  <li v-if="!modif">
 
     <span v-for="user of users" v-if="commentaire.id_auteur === user.id">{{user.login}}</span>
   </br>
@@ -14,11 +14,10 @@
       </br>
       <button @click="modification" class="btn btn-outline-warning">Modifier</button>
       <button @click="deletePost(commentaire.id)" class="btn btn-outline-danger">Supprimer</button>
-
     </span>
-  </p>
+  </li>
 
-  <p v-else>
+  <li v-else>
 
     <span v-for="user of users" v-if="commentaire.id_auteur === user.id">{{user.login}}</span>
 
@@ -26,7 +25,7 @@
 
     <button @click="modification" class="btn btn-outline-secondary">Annuler</button>
 
-  </p>
+  </li>
 
 </template>
 
@@ -39,7 +38,7 @@ export default {
       modif: false,
       messageModif: "",
       users: [],
-      user: ''
+      user: '',
     }
   },
   mounted() {
