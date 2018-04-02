@@ -2,17 +2,17 @@
   <div class="row">
     <div v-bind:class="classalert" v-if="alertmess != ''">{{alertmess}}</div>
      <h1>{{quizz.nom}}</h1>
-     <div class="row col l3 offset-s7">
-       <p v-if="note != ''">Vous avez donné la note de {{note}}</p>
-     </div>
-     <div class="rating">
+     <div class="row col s12 m2 rating">
        <a href="#" title="Donner 5 étoiles" @click="note5etoiles">☆</a>
        <a href="#" title="Donner 4 étoiles" @click="note4etoiles">☆</a>
        <a href="#" title="Donner 3 étoiles" @click="note3etoiles">☆</a>
        <a href="#" title="Donner 2 étoiles" @click="note2etoiles">☆</a>
        <a href="#" title="Donner 1 étoile" @click="note1etoile">☆</a>
       </div>
-     <ul>
+      <div class="row col s12 m2 offset-s1">
+        <p v-if="note != ''">Vous avez donné la note de {{note}}/5</p>
+      </div>
+     <ul class="collection col s12">
       <commentaireElement v-for="commentaire of commentaires" :key="commentaire.id" :commentaire="commentaire"></commentaireElement>
      </ul>
      <form @submit="creerCommentaire">
