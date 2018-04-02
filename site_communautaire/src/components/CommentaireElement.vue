@@ -2,9 +2,9 @@
 
 
 
-  <li v-if="!modif">
+  <li class="collection-item avatar" v-if="!modif">
 
-    <span v-for="user of users" v-if="commentaire.id_auteur === user.id">{{user.login}}</span>
+    <span class="title" v-for="user of users" v-if="commentaire.id_auteur === user.id">{{user.login}}</span>
   </br>
     <span>{{commentaire.message}}</span>
 
