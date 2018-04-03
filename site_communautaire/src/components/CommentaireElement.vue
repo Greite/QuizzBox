@@ -4,9 +4,11 @@
 
   <li class="collection-item avatar" v-if="!modif">
 
-    <span class="title" v-for="user of users" v-if="commentaire.id_auteur === user.id">{{user.login}}</span>
+    <span class="col offset-l0 title" v-for="user of users" v-if="commentaire.id_auteur === user.id">{{user.login}}</span>
+    <span class="col offset-l10">{{commentaire.created_at}}</span>
   </br>
     <span>{{commentaire.message}}</span>
+
 
 
 
