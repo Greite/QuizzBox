@@ -106,7 +106,6 @@ export default {
 						i++
 					})
 				  moyenne = total/i
-					console.log(id)
 					self.moyennes.push({id, moyenne})
 				})
 
