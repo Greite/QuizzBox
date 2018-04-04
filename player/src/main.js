@@ -6,6 +6,9 @@ import router from './router'
 import socketio from 'socket.io-client';
 import VueSocketIO from 'vue-socket.io';
 import axios from 'axios'
+import VModal from 'vue-js-modal'
+
+Vue.use(VModal)
 
 
 window.axios = axios.create({
